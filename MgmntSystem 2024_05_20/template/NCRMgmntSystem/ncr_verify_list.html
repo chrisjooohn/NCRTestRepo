@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <title>NCOA03: NCR Search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+ <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  
+  <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"-->
+        <!--integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">-->
+        
+  <link rel="stylesheet" href="{% static 'css/use.fontawesome.com_releases_v5.8.2_css_all.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pagination_blue.css' %}">
+    
+  <!--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.js' %}"> </script>
+  
+  
+  
+  
+  <style type="text/css">
+    .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+    
+    //.sdmifooter {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+    .sdmifooter {border-top:1px solid rgba(0,0,0,0.2);width:100%;bottom:0;position:fixed;padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+  </style>
+</head>
+
+<!--<body>-->
+<body onload="init_screen()">
+
+<div class="sdmiheader text-center" style="margin-bottom:0">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />  
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System :::</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>　    
+        <li class="active"><a href="#">Show NCR For Approval</a></li>            
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li> 
+        <li><a href="/ncr/projects_show">Show Project</a></li>　
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>　　
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form action="" method="POST" id="ncrSearchViewForm">
+
+{% csrf_token %}
+  
+<div class="container">
+
+{% if rec_cnt > 1 %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="blue"><p class="text-center">{{rec_cnt}} records for approval.</p></font></h3>  
+      <h4><p>The following records are for approval. Please click on the link to see details.</p></h4>
+    </div>     
+  </div>
+{% elif rec_cnt == 1 %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="blue"><p class="text-center">1 record for approval.</p></font></h3>  
+      <h4><p>Please click on the link to see details.</p></h4>
+    </div>     
+  </div>
+{% else %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="red"><p class="text-center">No record for approval.</p></font></h3>  
+    </div>     
+  </div>  
+{% endif %}
+
+{% if rec_cnt >= 1 %}
+  
+{% if page_obj == None %}   
+
+{% else %}
+
+
+<div class="table-responsive">
+    <table class="table table-striped"  width="50%" >
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" style="width:2%">#</th>
+                <th scope="col" style="width:20%">NCR No.</th>
+                <th scope="col" style="width:40%">Description</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Last Modified By</th>
+                <th scope="col">Last Modified Date</th>
+            </tr>
+        </thead>
+        <tbody>
+     {{data}}
+    {% for data in page_obj %}
+        <tr>
+            <th class="col-1">{{data.row_num}}</th> 
+            <td class="col-2">
+                <a href="/ncr/ncr_verify_view/{{data.ncr_no}}/1/None/None/{{logged_user_chapa_no}}">{{data.ncr_no}}</a>　                 
+            </td>
+            <td class="col-3">{{data.nc_detail_description}}</td>
+            <td class="col-2">{{data.deadline|date:'d F o'}}</td>
+            <td class="col-2">{{data.last_update_by_name}}</td>        
+            <td class="col-2">{{data.update_date|date:'d F o'}}</td>
+        </tr> 
+
+    {% endfor %}
+    
+        </tbody>          
+    </table>
+
+</div>
+
+{% endif %}  
+ 
+  {% include 'NCRMgmntSystem/_pagination_blue.html' with page_obj=page_obj %}
+ 
+{% endif %}  
+</div>  
+ 
+</form>
+
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+</body>
+</html>

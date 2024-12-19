@@ -1,0 +1,136 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta http-equiv="Pragma"              content="no-cache"                     />
+  <meta http-equiv="Cache-Control"       content="private"                      />
+  <meta http-equiv="Content-Type"        content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript"              />
+  <meta http-equiv="Content-Style-Type"  content="text/css"                     />
+  <script type="text/javascript" src="../js/disablebuttons.js"></script>
+  <script type="text/javascript" src="../js/prohibitkeys.js"></script>
+
+  <script type="text/javascript" src="../js/sdso_util.js"></script>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/jquery-ui.js"></script>
+  <script src="../js/callJquery.js"></script>
+  <script src="../js/jquery.freezetablecolumns.1.1.js"></script>
+  <link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/standard2_2017.css" />
+  <title>受注仕様検索画面</title>
+</head>
+
+<script>
+    //Scrollbar
+/*    $(function(){
+      $('#freeze-table').freezeTableColumns({
+        width:       1200,     // 幅   (必須)
+        height:      600,     // 高さ(必須)
+        numFrozen:   0,       // 固定コラム (任意)
+*/        //frozenWidth: 150,   // 任意
+        //clearWidths: true,  // 任意
+//      });
+
+//    });
+</script>
+
+
+
+<body>
+
+
+
+
+<style type="text/css">
+<!--
+.tips {  /* tips というクラス名のスタイル */
+    position: absolute;           /* 表示位置の設定 */
+    visibility: hidden;           /* 非表示の設定 */
+    width: 200px;                 /* 表示部の横幅 */
+    padding:3px;                 /* 表示部内の余白 */
+    background-color: #ffeeff;    /* 背景色 */
+    border: 1px solid #0000ff;    /* 線の太さ、線の種類、枠線の色 */
+    font-size: 10pt;              /* フォントの大きさ */
+    font-family: MS UI Gothic;    /* フォントの指定 */
+    text-align: left;             /* 文字の位置 */
+    line-height: 1.3em;       /* 行間隔 */
+    letter-spacing: 0.7pt;    /* 文字間隔 */
+    z-index:999;
+}
+
+table.SUB_MENU  {background-color:white;}
+td.SUB_MENU {background-color:white;}
+-->
+</style>
+
+<style>
+    .ui-datepicker {
+      font-size: 80% !important;
+    }
+    .ui-datepicker .ui-datepicker-header {
+         background: #89c3eb;
+    }
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+      color: #1c94c4;
+    }
+    .ui-widget-header {
+      border: none;
+
+    }
+    .hide-calendar .ui-datepicker-calendar {
+      display: none;
+
+    }
+    .hide-calendar .ui-datepicker-buttonpane BUTTON.ui-datepicker-current {
+      display: none;
+    }
+
+    .ui-tooltip {
+      max-width: 1000px;
+      padding: 5px;
+    }
+
+    .detailCond {
+      display: none;
+    }
+
+    .ui-icon-position {
+      float: right;
+      margin-right: 5px;
+    }
+
+td.LIST_Y {padding:2px 5px; background-color:yellow;}
+</style>
+
+
+{% for employee in page_obj %}
+    {# Each "employee" is a Contact model object. #}
+    {{ employee.chapano }}<br>
+    ...
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <title>NCOAXX: NCR Project Update</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  
+  <!--
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        -->
+  <link rel="stylesheet" href="{% static 'css/use.fontawesome.com_releases_v5.8.2_css_all.css' %}">
+  
+  
+  <link rel="stylesheet" href="{% static 'css/pagination_blue.css' %}">
+    
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.js' %}"> </script>
+  <style>
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }
+  </style>
+  
+  <style type="text/css">
+    .custom-radio-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .error {
+      border: 2px red solid;
+    }
+
+    .error input, .error select {
+      border: 2px red solid;
+    }
+
+    .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+
+    .sdmifooter {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+
+  </style>
+</head>
+
+<body>
+
+<div class="sdmiheader text-center" style="margin-bottom:0">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System ::: </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>　       
+        {% if isChecker or isSH or isGrpMgr %}
+            <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>　        
+        {% endif %}                  
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li>                
+        <li class="active"><a href="#">Edit Project</a></li>        
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>　　         
+      </ul>　  
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form action="{% url 'NCRMgmntSystem:project_update' id=data.id  %}" method="POST" id="projectUpdateForm" >
+
+{% csrf_token %}
+
+<div class="container">
+  <div class="form-row"><h4><font color="blue">{{success_message}}</h4></font></div>
+  <!-- Error messaging -->
+  <div class="form-row"><h4><font color="red">{{error_message}}</font></h4></div>
+  {% if form.errors %}
+  <div id="errors">
+	<div class="inner">
+	  <h4><font color='red'>
+	  <p>There were some errors in the information you entered. Please correct the following:</p>
+		{{ form.non_field_errors }}
+	  <ul>
+		{% for field in form %}
+		{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+		{% endfor %}
+	  </ul>
+	  </h4></font>
+	</div>
+  </div>
+  <!-- /Error messaging -->
+  {% endif %}
+  
+  <div class="row">
+    <div class="col-sm-6">
+      <input type="button" class="btn btn-primary active" name="update" id="update" value="Update" > 
+    </div>
+    <div class="col-sm-6">
+      <p class="text-right"><a href="/ncr/projects_show">Show Projects</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="/ncr/project_add">Add Project</a></p>     
+    </div> 
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+        <label for="dept">{{form.dept.label}}</label>&nbsp;&nbsp;
+        <input type="textbox" class="form-control" id="dept" value="{{data.dept}}" disabled/>        
+      </div>
+      <div class="row">
+        <label for="code">{{form.code.label}}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="textbox" class="form-control" id="code" value="{{data.code}}" size="30" disabled/>
+      </div>
+      <div class="row">
+        <label for="name">{{form.name.label}}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.name}}    
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="row">
+        <label for="archive_location">{{form.archive_location.label}}</label>&nbsp;&nbsp;{{form.archive_location}}  
+      </div>      
+    </div>
+  </div>  
+  
+  <br>
+
+</div>  
+ 
+ 
+ <!-- Start adding for additional request  Edric Marinas 2024/04/15-->
+
+
+<div class="modal fade" role="dialog" id="modal_update">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Do you want to submit?</h3></center>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                
+                    <label for="reason" class="col-form-label"></label><br>
+                    If you click [<b>SUBMIT</b>] button, your inputs will update the database.
+                    
+
+               </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtn" data-dismiss="modal">Cancel</button>
+                
+                
+    			<input type="submit" class="btn btn-primary active" name="update" id="update" value="SUBMIT" > 
+						
+            </div>            
+        </div>
+    </div>
+</div>
+<!-- End adding for additional request  Edric Marinas 2024/04/15-->
+ 
+
+ 
+ 
+</form>
+
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+
+</body>
+</html>
+
+<script>
+$(document).ready(function(){
+    $("#update").click(function(){
+
+        $("#modal_update").modal("show");
+    });
+
+});
+
+</script>
+
+

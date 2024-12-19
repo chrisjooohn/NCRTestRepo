@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+  <title>Log in | NCR Management System</title>
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">  
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/login.css">
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+  <meta name="robots" content="NONE,NOARCHIVE">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  {% load static %}
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  <script src="{% static 'js/bootstrap.min.js' %}"> </script>
+  <style>
+  .fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+  </style>
+  <style type="text/css">
+  .custom-radio-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .error {
+    border: 2px red solid;
+  }
+  
+  .error input, .error select {
+    border: 2px red solid;
+  }
+  
+  .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+  }
+
+   .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+   
+   .sdmifooter {border-top:1px solid rgba(0,0,0,0.2);width:100%;bottom:0;position:fixed;padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+
+  </style>
+</head>
+
+<!--<body>-->
+<body class=" login" data-admin-utc-offset="0">
+
+{% load static %}
+
+<div class="sdmiheader text-center" style="margin-bottom:0">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />  
+</div>
+
+
+<!-- Container -->
+<div id="container">
+    
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">Log in | NCR Management System</h1>
+        </div>        
+    </div>
+    <!-- END Header -->
+    
+    <!-- Content -->
+    <div id="content" class="colM">
+        
+        <div id="content-main">
+  
+            <form class="form-inline" name="loginForm" action="{% url 'NCRMgmntSystem:login' %}" method="POST">
+
+            {% csrf_token %}             
+  
+                <div class="form-group">
+                    <center><b><font color="red">{{error_message}}</font></b></center>
+                </div>                
+                
+                <div class="form-group">
+                    <label class="required" for="chapaNo">Chapa No:</label> {{form.chapano}}
+                </div>
+  
+                <div class="form-group">
+                    <label class="required" for="password">Password:</label>&nbsp;&nbsp;{{form.password}}
+                </div>
+  
+                <div class="submit-row">
+                    <label>&nbsp;</label>
+                    <input type="submit" class="btn btn-primary active" name="log_in" id="log_in" value="Log in" >    
+                </div>
+              
+            </form>
+        </div>
+        
+        <br class="clear">
+    
+    </div>
+
+    <!-- END Content -->
+
+    <div id="footer"></div>
+    
+</div>
+<!-- END Container -->
+
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+</body>
+</html>

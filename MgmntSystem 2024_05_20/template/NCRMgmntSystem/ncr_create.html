@@ -1,0 +1,3135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <title>NCOA01: NCR Create Detail</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  
+  
+  {% load static %}
+  
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/dist/css/bootstrap.min.css' %}">
+  
+
+
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="{% static 'js/jquery-1.8.3.js' %}"> </script>
+  
+  
+  <!--<script src="{% static 'js/bootstrap.js' %}"> </script>-->
+  
+  
+  
+  
+  
+  
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css"> -->
+  <!--<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>  -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+  <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+
+  <style>
+    
+    #nc_discoverer_email{
+        width: 200px;
+    }
+    #nc_discovered_by{
+        width: 200px;
+    }
+
+
+
+    .datepicker-dropdown {
+      top: 0;
+      left: 0;
+      padding: 4px;
+      background-color: #2C6E8E;
+      border-radius: 10px;
+      }
+    .datepicker table {
+      margin: 0;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+.datepicker table tr td,
+.datepicker table tr th {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: none;
+  color: #FFFFFF;
+}
+
+.datepicker table tr td.day:hover,
+.datepicker table tr td.focused {
+  background: #555555;
+  cursor: pointer;
+}
+.datepicker table tr td.old,
+.datepicker table tr td.new {
+  color: #FF8000;
+}
+
+.datepicker table tr td.today {
+  color: #000000;
+  background-color: #FFA953;
+  border-color: #FFB76F;
+}
+.datepicker table tr td.today:hover {
+  color: #FFFFFF;
+  background-color: #884400;
+  border-color: #f59e00;
+}
+.datepicker table tr td.active:active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active,
+.open > .dropdown-toggle.datepicker table tr td.active,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted {
+  color: #ffffff;
+  background-color: #419841;
+  border-color: #285e8e;
+}
+
+
+.datepicker table tr td.active:active:hover,
+.datepicker table tr td.active.highlighted:active:hover,
+.datepicker table tr td.active.active:hover,
+.datepicker table tr td.active.highlighted.active:hover,
+.open > .dropdown-toggle.datepicker table tr td.active:hover,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted:hover,
+.datepicker table tr td.active:active:focus,
+.datepicker table tr td.active.highlighted:active:focus,
+.datepicker table tr td.active.active:focus,
+.datepicker table tr td.active.highlighted.active:focus,
+.open > .dropdown-toggle.datepicker table tr td.active:focus,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted:focus,
+.datepicker table tr td.active:active.focus,
+.datepicker table tr td.active.highlighted:active.focus,
+.datepicker table tr td.active.active.focus,
+.datepicker table tr td.active.highlighted.active.focus,
+.open > .dropdown-toggle.datepicker table tr td.active.focus,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted.focus {
+  color: #ffffff;
+  background-color: #285e8e;
+  border-color: #193c5a;
+}
+.datepicker table tr td.active:active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active,
+.open > .dropdown-toggle.datepicker table tr td.active,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted {
+  color: #ffffff;
+  background-color: #3071a9;
+  border-color: #285e8e;
+}
+.datepicker table tr td.active:active:hover,
+.datepicker table tr td.active.highlighted:active:hover,
+.datepicker table tr td.active.active:hover,
+.datepicker table tr td.active.highlighted.active:hover,
+.open > .dropdown-toggle.datepicker table tr td.active:hover,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted:hover,
+.datepicker table tr td.active:active:focus,
+.datepicker table tr td.active.highlighted:active:focus,
+.datepicker table tr td.active.active:focus,
+.datepicker table tr td.active.highlighted.active:focus,
+.open > .dropdown-toggle.datepicker table tr td.active:focus,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted:focus,
+.datepicker table tr td.active:active.focus,
+.datepicker table tr td.active.highlighted:active.focus,
+.datepicker table tr td.active.active.focus,
+.datepicker table tr td.active.highlighted.active.focus,
+.open > .dropdown-toggle.datepicker table tr td.active.focus,
+.open > .dropdown-toggle.datepicker table tr td.active.highlighted.focus {
+  color: #ffffff;
+  background-color: #285e8e;
+  border-color: #193c5a;
+}
+.datepicker .datepicker-switch {
+  width: 145px;
+  
+}
+.datepicker .datepicker-switch:hover,
+.datepicker .prev:hover,
+.datepicker .next:hover,
+.datepicker tfoot tr th:hover {
+  background: #50A2C9;
+  
+}
+
+
+    /*Right-aligned section inside the top navigation */
+    .topnav-right {
+        float: right;
+    }
+
+    .del {
+        text-decoration: line-through;
+    }  
+
+
+        #loader {
+            border: 12px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 12px solid #444444;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+        }
+          
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+          
+        .center {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        
+        .glyphicon.glyphicon-ok {font-size: 25px;}
+        
+        .glyphicon.glyphicon-remove {font-size: 25px;}
+
+
+    </style>
+
+<script type='text/javascript'>
+    $(function(){
+        $('.input-group.date').datepicker({
+            orientation: "auto left",
+            forceParse: false,
+            autoclose: true,
+            todayHighlight: true,
+            toggleActive: true,
+            format: 'yyyy-mm-dd'  
+        });
+    });
+    
+    function init_screen()  { 
+    
+        if($('#id_ncr_no').val() != '') {        
+            $('#forUpdateNcr').hide();
+            $('#forReadOnlyNcr').show();
+            
+            if($('#nc_conforme_status').val() == '1') {
+                $('#forUpdateSrc').hide();
+                $('#forReadOnlySrc').show(); 
+                $('#forUpdateA').hide();
+                $('#forReadOnlyA').show();
+                
+                if($('#ic_approve_status').val() == '1') {
+                    $('#forUpdateB').hide();
+                    $('#forReadOnlyB').show();
+                    
+                    if($('#ca_approve_by_mgr_status').val() == '1') { 
+                    
+                        $('#forUpdateC').hide();
+                        $('#forReadOnlyC').show();  
+                        $('#forUpdateD').hide();
+                        $('#forReadOnlyD').show();  
+
+                        selected_classification = $("input[name='classification']:checked").val();   
+                        
+                        if(selected_classification == '1'){ 
+                            $('#forUpdateF').show();
+                            
+                            //<!-- Modify for additional request-->
+                            checkboxFunction();
+                            
+                            
+                            $('#forReadOnlyF').hide(); 
+                            $("#se_description").attr("disabled", true);
+                            $("#se_ro_updated_0").attr("disabled", true);
+                            $("#se_ro_updated_1").attr("disabled", true); 
+                              
+                        }else if(selected_classification == '2'){   
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').show(); 
+                            
+                            $("#se_description").attr("disabled", false);
+                            $("#se_ro_updated_0").attr("disabled", false);
+                            $("#se_ro_updated_1").attr("disabled", false); 
+                        }
+
+                        if ( $.trim($('#ra_description').val()) != '') {
+                            $("#ra_action_effective_0").attr("disabled", false);
+                            $("#ra_action_effective_1").attr("disabled", false); 
+                            $("#ra_action_effective_2").attr("disabled", false);    
+                        } else {
+                            $("#ra_action_effective_0").attr("disabled", true);
+                            $("#ra_action_effective_1").attr("disabled", true);   
+                            $("#ra_action_effective_2").attr("disabled", true);   
+            
+                            $("#ra_action_effective_0").attr("checked", false);
+                            $("#ra_action_effective_1").attr("checked", false);   
+                            $("#ra_action_effective_2").attr("checked", false);   
+                        }
+                        
+                        selected_ra_action_effective_value = $("input[name='ra_action_effective']:checked").val();     
+        
+                        if (selected_ra_action_effective_value == '0') {
+                            $('#forUpdateE').hide();
+                            $('#forReadOnlyE').show(); 
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').show();             
+                            
+                            $("#ra_followup_date").attr("disabled", true); 
+                            $('#ra_followup_date').val("")
+                            
+                        } else if (selected_ra_action_effective_value == '1') { 
+                            $('#forUpdateF').show();
+                            
+                            //<!-- Modify for additional request-->
+                            checkboxFunction();
+                            
+                            
+                            $('#forReadOnlyF').hide(); 
+                            $("#se_description").attr("disabled", false);
+                            $("#se_ro_updated_0").attr("disabled", false);
+                            $("#se_ro_updated_1").attr("disabled", false); 
+                         
+                            $("#ra_followup_date").attr("disabled", true); 
+                            $('#ra_followup_date').val("")
+                            
+                        } else if (selected_ra_action_effective_value == '2') {  
+                            $("#ra_followup_date").attr("disabled", false); 
+                            
+                            $("#se_description").attr("disabled", true);
+                            $("#se_ro_updated_0").attr("disabled", true);
+                            $("#se_ro_updated_1").attr("disabled", true); 
+                            
+                        } else{ 
+                            $("#ra_followup_date").attr("disabled", true); 
+                            $('#ra_followup_date').val("")
+                            
+                            $("#se_description").attr("disabled", true);
+                            $("#se_ro_updated_0").attr("disabled", true);
+                            $("#se_ro_updated_1").attr("disabled", true); 
+                        }
+                        
+                        if($('#ra_check_by_sh_status').val() == '') { 
+                            $('#forUpdateE').show();
+                            $('#forReadOnlyE').hide(); 
+                            $('#forUpdateF').show();
+                            
+                            
+                            //<!-- Modify for additional request-->
+                            checkboxFunction();
+                            
+                            
+                            $('#forReadOnlyF').hide();                             
+                        } else {
+                            $('#forUpdateE').hide();
+                            $('#forReadOnlyE').show(); 
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').show(); 
+                        }
+                        
+                    } else {
+                    
+                        if($('#rca_approve_status').val() == '1') {
+                            $('#forUpdateC').hide();
+                            $('#forReadOnlyC').show();     
+                                             
+                        } else {                      
+                            if($('#rca_approve_status').val() == '0') {
+                                $('#forUpdateC').hide();
+                                $('#forReadOnlyC').show();
+                                                      
+                            } else {
+                                $('#forUpdateC').show();
+                                $('#forReadOnlyC').hide();    
+                            }
+                        }
+                         
+                        if($('#ca_check_by_sh_status').val() == '1') {
+                            $('#forUpdateD').hide();
+                            $('#forReadOnlyD').show();                        
+                        } else {     
+                            if($('#ca_check_by_sh_status').val() == '0') {
+                                $('#forUpdateD').hide();
+                                $('#forReadOnlyD').show();                      
+                            } else {
+                                $('#forUpdateD').show();
+                                $('#forReadOnlyD').hide();                            
+                            }
+                        } 
+                         
+                        if($('#ra_check_by_sh_status').val() == '' ) {
+                            $('#forUpdateE').hide();
+                            $('#forReadOnlyE').show();    
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').show();    
+                             
+                        } else {
+                            $('#forUpdateE').show();
+                            $('#forReadOnlyE').hide();    
+                            $('#forUpdateF').show();
+                            
+                            
+                            //<!-- Modify for additional request-->
+                            checkboxFunction();
+                            
+                            
+                            $('#forReadOnlyF').hide();                                
+                        }
+                    
+                        selected_ca_necessary = $("input[name='ca_necessary']:checked").val();    
+
+                        if(selected_ca_necessary == '1'){ 
+                            $('#forHeaderD').show();
+                            
+                            if($('#ca_check_date_by_sh').val() != '' ) {
+                                $('#forUpdateD').hide();
+                                $('#forReadOnlyD').show();   
+                            } else {    
+                                $('#forUpdateD').show();
+                                $('#forReadOnlyD').hide();
+                            }
+                            
+                            $('#forHeaderE').show();
+                            $('#forUpdateE').hide();
+                            $('#forReadOnlyE').show();
+                        
+                            $('#forHeaderF').show();
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').show();
+                            
+                        }else if(selected_ca_necessary == '0'){             
+                            $('#forHeaderD').hide();
+                            $('#forUpdateD').hide();
+                            $('#forReadOnlyD').hide();
+                        
+                            $('#forHeaderE').hide();
+                            $('#forUpdateE').hide();
+                            $('#forReadOnlyE').hide();
+                        
+                            $('#forHeaderF').hide();
+                            $('#forUpdateF').hide();
+                            $('#forReadOnlyF').hide();
+                     
+                        }else{
+                            if($('#ic_approve_status').val() == '1') {
+                                if($('#ca_check_by_sh_status').val() == '') {
+                                    $('#forUpdateD').show(); 
+                                    $('#forReadOnlyD').hide();  
+                                } else {
+                                    $('#forUpdateD').hide(); 
+                                    $('#forReadOnlyD').show();  
+                                }
+                            } 
+                            
+                            $('#forUpdateE').hide(); 
+                            $('#forReadOnlyE').show();
+                            $('#forUpdateF').hide(); 
+                            $('#forReadOnlyF').show(); 
+                        } 
+                              
+                    }
+                    
+                } else {            
+                    if($('#ic_approve_status').val() == '0') {
+                        $('#forUpdateB').hide();
+                        $('#forReadOnlyB').show();    
+                    } else {
+                        $('#forUpdateB').show();
+                        $('#forReadOnlyB').hide();                    
+                    }
+                
+                    $('#forUpdateC').hide();
+                    $('#forReadOnlyC').show();  
+                    $('#forUpdateD').hide();
+                    $('#forReadOnlyD').show();  
+                    $('#forUpdateE').hide();
+                    $('#forReadOnlyE').show();  
+                    $('#forUpdateF').hide();
+                    $('#forReadOnlyF').show();  
+                    
+                }        
+            } else {   
+               
+               if($('#nc_conforme_status').val() == '0') {
+                   $('#forUpdateSrc').hide(); 
+                   $('#forReadOnlySrc').show(); 
+                   $('#forUpdateA').hide();
+                   $('#forReadOnlyA').show();        
+               
+               } else {
+                   $('#forUpdateSrc').show(); 
+                   $('#forReadOnlySrc').hide(); 
+                   $('#forUpdateA').show();
+                   $('#forReadOnlyA').hide();        
+               }
+                
+                $('#forUpdateB').hide();
+                $('#forReadOnlyB').show();
+                $('#forUpdateC').hide();
+                $('#forReadOnlyC').show();
+                $('#forUpdateD').hide();
+                $('#forReadOnlyD').show();
+                $('#forUpdateE').hide();
+                $('#forReadOnlyE').show();
+                $('#forUpdateF').hide();
+                $('#forReadOnlyF').show();
+                
+            }        
+             
+        } else {                
+            $('#forUpdateNcr').show(); 
+            $('#forReadOnlyNcr').hide(); 
+            $('#forUpdateSrc').show(); 
+            $('#forReadOnlySrc').hide(); 
+            $('#forUpdateA').show();
+            $('#forReadOnlyA').hide();
+            $('#forUpdateB').hide();
+            $('#forReadOnlyB').show();
+            $('#forUpdateC').hide();
+            $('#forReadOnlyC').show();
+            $('#forUpdateD').hide();
+            $('#forReadOnlyD').show();
+            $('#forUpdateE').hide();
+            $('#forReadOnlyE').show();
+            $('#forUpdateF').hide();
+            $('#forReadOnlyF').show();            
+        }
+        
+        selected_source = $("input[name='source']:checked").val();            
+        
+        if (selected_source == '5') {                
+            $("#other_source").attr("disabled", false);
+            
+        } else {
+            $("#other_source").attr("disabled", true);
+            $("#other_source").val("");
+        } 
+        
+        if($('#status').val() == '5' || $('#status').val() == '2' ) {
+            $('#forUpdateNcr').hide(); 
+            $('#forReadOnlyNcr').show(); 
+            $('#forUpdateSrc').hide(); 
+            $('#forReadOnlySrc').show(); 
+            $('#forUpdateA').hide();
+            $('#forReadOnlyA').show();
+            $('#forUpdateB').hide();
+            $('#forReadOnlyB').show();
+            $('#forUpdateC').hide();
+            $('#forReadOnlyC').show();
+        }    
+        
+        if($('#is_A_on_edit_mode').val() == '1') {
+            $('#forReadOnlySrc').hide(); 
+            $('#forUpdateSrc').show();             
+            $('#forReadOnlyA').hide();
+            $('#forUpdateA').show();
+        }
+        
+        if($('#is_B_on_edit_mode').val() == '1') {
+            $('#forReadOnlyB').hide();
+            $('#forUpdateB').show();
+        }
+        
+        if($('#is_C_on_edit_mode').val() == '1') {
+            $('#forReadOnlyC').hide();
+            $('#forUpdateC').show();
+        }
+        
+        if($('#is_D_on_edit_mode').val() == '1') {
+            $('#forReadOnlyD').hide();
+            $('#forUpdateD').show();
+        }
+        
+        if($('#is_E_on_edit_mode').val() == '1') {
+            $('#forReadOnlyE').hide();
+            $('#forUpdateE').show();
+        }
+        
+        if($('#is_F_on_edit_mode').val() == '1') {
+            $('#forReadOnlyF').hide();
+            $('#forUpdateF').show();
+            
+            //<!-- Modify for additional request-->
+            checkboxFunction();
+            
+            
+        }
+        
+        selected_classification = $("input[name='classification']:checked").val(); 
+        selected_ra_action_effective = $("input[name='ra_action_effective']:checked").val();    
+        selected_se_ro_updated = $("input[name='se_ro_updated']:checked").val();    
+        
+        if(selected_classification == '2' && selected_ra_action_effective == '1' && selected_se_ro_updated  != '1') {        
+            $('#forReadOnlyF').hide();
+            $('#forUpdateF').show();
+            
+            //<!-- Modify for additional request-->
+            checkboxFunction();
+            
+            
+        } 
+        
+        if($('#ra_check_date_by_sh').val() != '') {
+            $('#se_description_read').show();
+            $('#se_description_upd').hide();
+            
+        } else {
+            $('#se_description_read').hide();
+            $('#se_description_upd').show();
+        }
+        
+        if($('#rca_approve_status').val() == '0' && $('#ca_description').val() == '' && $('#is_D_on_edit_mode').val() != '1') {
+            $('#forUpdateD').hide();
+            $('#forReadOnlyD').show();    
+            
+            if(selected_ca_necessary == '0') { 
+                $('#forUpdateD').hide();
+                $('#forReadOnlyD').hide();    
+            }
+        }  
+
+    }     
+        
+</script>
+    
+<style>  
+  .fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+  </style>
+  <style type="text/css">
+  .custom-radio-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .error {
+    border: 2px red solid;
+  }
+  
+  .error input, .error select {
+    border: 2px red solid;
+  }
+  
+  
+  .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        
+        box-shadow: 0 0 5px 0px red inset;
+   }
+
+   .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+   
+   .sdmifooter {border-top:1px solid rgba(0,0,0,0.2);width:100%;bottom:0;position:fixed;padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+
+  </style>
+  
+  <style>
+        #loader {
+            border: 12px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 12px solid #444444;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+        }
+          
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+          
+        .center {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+
+</head>
+  
+<body>
+    <div id="loader" class="center"></div>
+    
+<nav class="navbar navbar-inverse">
+    <div class="sdmiheader text-center" style="margin-bottom:0;">
+      <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />
+    </div>
+
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System ::: </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        {% if ncr_no != '' %}
+            <li class="active"><a href="#">Edit NCR Detail</a></li>　             
+            <li><a href="/ncr/ncr_create_view_ins">Create New NCR Detail</a></li>
+        {% else %} 
+            <li class="active"><a href="#">Create New NCR Detail</a></li>　          
+        {% endif %}  
+        {% if isChecker or isSH or isGrpMgr %}
+            <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>　        
+        {% endif %}                  
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li>
+        <li><a href="/ncr/projects_show">Show Project</a></li>　
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>
+        
+        {% if data.rev_no >= 0 %}
+            <input id="hidden_rev_no" type="hidden" value="{{data.rev_no}}">
+            
+            <li>
+            <a href="/ncr/ncr_create_view_history/{{data.ncr_no}}/0/create" >NCR History</a>
+            </li>  
+                
+        {% endif %}
+        　
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br><br><br><br><br><br><br><br>
+<form class="form-inline" style="top:5000px;"
+  action="{% url 'NCRMgmntSystem:ncr_create' %}" 
+  method="POST" 
+  id="ncrCreateForm" 
+  data-projects-url="{% url 'NCRMgmntSystem:ajax_load_projects' %}" 
+  data-checkers-url="{% url 'NCRMgmntSystem:ajax_load_checkers' %}" 
+  data-members-url="{% url 'NCRMgmntSystem:ajax_load_members' %}"  
+  get-latest-update-date-url="{% url 'NCRMgmntSystem:ajax_get_latest_update_date' %}"   
+  novalidate>
+
+{% csrf_token %}
+
+<div class="container" >
+
+  <div id="success_msg" class="form-row"><h4><font color="blue">
+  
+    <span id="success_msgSpan">{{message}}</span>
+  
+  </h4></font></div>
+  <!-- Error messaging -->
+  <div id="err_msg" class="form-row"><h4><font color="red">{{error_message}}</font></h4></div>
+  {% if form.errors %}
+  <div id="errors">
+	<div class="inner">
+	  <h4><font color='red'>
+	  <p>There were some errors in the information you entered. Please correct the following:</p>
+		{{ form.non_field_errors }}
+	  <ul>
+		{% for field in form %}
+		{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+		{% endfor %}
+	  </ul>
+	  </h4></font>
+	</div>
+  </div>
+  <!-- /Error messaging -->
+  {% endif %}
+
+<!-- Modal HTML -->
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<div id="modal-body1"> <p>
+				</p></div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="btnContinueSave" name="continueSave" value="continueSave">Continue</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<div id="confirm_4" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p> If you click [<b>CONTINUE</b>] button, your inputs will be not be saved in database and<br> 
+				   information displayed on screen will be reset to database's current information <br>
+				   for this NCR.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="btnContinueReset" name="continueReset" value="continue
+				">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>  
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p> Do you want to save you modification and notify checkers?
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p> Do you really want to reset the screen content?
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>  
+
+<div id="confirm_1" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, inputs in "F. Show Effectiveness" is necessary.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be only saved in database, but no email <br>
+				   notification will be send to checker/s.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>   
+
+<div id="confirm_2" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, it is necessary that your Risk and Oppurtunity is updated.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be saved in database and email <br>
+				   notification will be send to checker/s, but it is possible that it will be rejected by QA<br> 
+				   or be pending for NCR closing until you update your Risk and Oppurtunity.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>   
+
+
+<!-- Start Adding Edric Marinas 2024/04/19 -->
+<div id="confirm_2_saveOnly" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>	                
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, it is necessary that your Risk and Oppurtunity is updated.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be saved in database and no email <br>
+				   notification will be send to checker/s, but it is possible that it will be rejected by QA<br> 
+				   or be pending for NCR closing until you update your Risk and Oppurtunity.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>   
+<!-- End Adding Edric Marinas 2024/04/19 -->
+
+
+
+
+<div class="modal fade" id="modalForA" tabindex="-1" role="dialog" aria-labelledby="modalForA1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b>A. Nonconformance detail description</h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonA}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
+        <button id="btnAllowEditA" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>                      
+      </div>
+    </div>
+  </div>
+</div>  
+
+<div class="modal fade" id="modalForB" tabindex="-1" role="dialog" aria-labelledby="modalForB1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b>B. Immediate Correction</h5>       
+      </div>
+      <div class="modal-body">
+        {{deny_reasonB}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>      
+        <button id="btnAllowEditB" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>          
+      </div>
+    </div>
+  </div>
+</div>   
+
+<div class="modal fade" id="modalForC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)     
+          {% if data.ca_description != '' and data.ca_description != None %}
+            <br>D. Corrective Action to the cause
+          {% endif %}
+        </h5>        
+      </div>
+      <div class="modal-body">
+        {{deny_reasonC}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>       
+        <button id="btnAllowEditC" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>  
+      </div>
+    </div>
+  </div>
+</div>  
+
+<div class="modal fade" id="modalForD" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause</h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonD}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+        <button id="btnAllowEditD" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>    
+      </div>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" id="modalForE" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause<br>E. Result of Action
+        {% if data.se_description != '' and data.se_description != None %}
+          <br>F. Show Effectiveness
+        {% endif %}        
+        </h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonE}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+        <button id="btnAllowEditE" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>    
+      </div>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" id="modalForF" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause<br>E. Result of Action<br>F. Show Effectiveness</h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonF}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+        <button id="btnAllowEditF" type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span>Edit</button>    
+      </div>
+    </div>
+  </div>
+</div>    
+
+
+<!-- Start modifying for additional Request Edric 2024/04/04 -->
+<div id="cancelNCRmodal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Send cancel request to SH</h4>	
+				Changes wont be saved if you request for NCR cancellation                
+			</div>
+			<div class="modal-body">
+                <p>
+				   <label for="reason" class="col-form-label" id="reason">Reason/s:</label>
+				   <textarea  class="form-control"  rows="7" cols="75" id="cancelReason"></textarea>
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="cancelContinue" name="cancelContinue" value="cancelContinue" onclick="request_cancel()">Continue</button>
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<div id="cancelNCRmodalDenied" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Cancel Request Denied!</h4>	                
+			</div>
+			<div class="modal-body">
+                <p>
+				   <label for="reason" class="col-form-label" id="reason">Reason/s:</label>
+				   <textarea  class="form-control"  rows="7" cols="75" id="cancelReason" disabled>{{a.reason}}</textarea>
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+    			<button type="button" class="btn btn-primary active save-btn" onclick="cancelNCRmodal()" id="cancelNCR1" >
+                  Make New Cancel Request
+                </button> 
+				<button type="button" id="cancel_button_modal" class="btn btn-warning" data-dismiss="modal">Close</button>
+				
+			</div>
+		</div>
+	</div>
+</div> 
+
+
+<div id="NCR_cancel_message_modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>					
+				<h4 class="modal-title w-100">NCR Cancel Message</h4>	                
+			</div>
+			<div class="modal-body">
+                <p>
+				   <label for="reason" class="col-form-label" id="reason">Message:</label>
+				   <textarea  class="form-control"  rows="7" cols="75"  disabled>{{a.reason}}</textarea>
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				
+			</div>
+		</div>
+	</div>
+</div> 
+<!-- End modifying for additional Request Edric 2024/04/04 -->
+
+
+{% if data.status == '2' and a.phase == 'H'%}
+    <button type="button" class="btn btn-primary active save-btn" id="NCR_cancel_message" >
+      NCR Cancel Message
+    </button>
+{%endif%}
+
+{% if data.close_date|date:"Y-m-d" == '' %}
+
+  <div class="row">
+    <div class="col-sm-9">
+    
+    <!-- Start modifying for additional request Edric Marinas 2024/03/06 -->
+    <!-- <button type="button" class="btn btn-primary active save-btn" name="btnSave" id="btnSave">-->
+    
+    <button type="button" class="btn btn-primary active save-btn" name="btnSave" id="btnSave" value="S" onclick="saveNF(this.value)">
+      <span class="glyphicon glyphicon-floppy-save"></span> Save
+    </button>
+    
+    
+    <button type="button" class="btn btn-primary active save-btn" name="btnSave" id="btnSave" value="SN" onclick="saveNF(this.value)">
+      <span class="glyphicon glyphicon-floppy-save"></span> Save & 
+      <span class="glyphicon glyphicon-bell"></span> Notify
+    </button>
+
+     <!-- End modifying for additional request Edric Marinas 2024/03/06-->
+    
+    
+      
+      
+      <button type="button" class="btn btn-primary active save-btn" id="btnReset">
+        <span class="glyphicon glyphicon-refresh"></span> Reset
+      </button>
+      <!-- Start modifying for additional request Edric Marinas 2024/04/04 -->
+      
+    
+    
+
+    {% if a.phase == 'H' and data.status != '7' %}
+        <button type="button" class="btn btn-primary active save-btn" id="SHdenyReason" >
+          Cancel Request Denied
+        </button>
+    {%elif data.status != '5' and data.status != None and data.status != '' and data.status != '7' %}
+      <button type="button" class="btn btn-primary active save-btn" onclick="cancelNCRmodal()" id="cancelNCR" >
+        Cancel Request 
+      </button> 
+    {%elif data.status == '7'%}
+        <button type="button" class="btn btn-primary active save-btn" id="cancelNCR" disabled >
+          Cancel Request <font size="1px">(wait for response)</font>
+        </button> 
+    {%endif%}
+    
+      <!-- End modifying for additional request Edric Marinas 2024/04/04 -->
+      
+      {% if deny_reasonA != '' %}
+        <a data-target="#modalForA" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForA">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>          
+      {% endif %}
+      {% if deny_reasonB != '' %}
+        <a data-target="#modalForB" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForB">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>          
+      {% endif %}
+      
+      {% if deny_reasonC != '' %}
+        <a data-target="#modalForC" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForC">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>   
+      {% endif %}   
+    
+      {% if deny_reasonD != '' %}
+        <a data-target="#modalForD" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForD">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>          
+      {% endif %}
+      {% if deny_reasonE != '' %}
+        <a data-target="#modalForE" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForE">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>          
+      {% endif %}
+      {% if deny_reasonF != '' %}
+        <a data-target="#modalForF" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForF">
+          <button type="button" class="btn btn-primary active save-btn">
+            <span class="glyphicon glyphicon-search"></span> View Deny Reason
+          </button>
+          </a>       
+      {% endif %}
+
+          
+
+    </div>
+    <div class="col-sm-3">
+      {% if data.deadline != None %}
+        <h4><p class="text-right">Deadline: {{data.deadline|date:'d F o'}}
+        {% if data.rev_no > 0 %}
+            &nbsp;<input id="hidden_rev_no" type="hidden" value="{{data.rev_no}}">
+            r.{{data.rev_no}}
+            </p></h4>              
+        {% endif %}
+        </p></h4>              
+      {% endif %}
+    </div>      
+  </div>
+{% else %}  
+
+  <div class="row">
+    <div class="col-sm-9">
+      &nbsp;
+    </div>
+    <div class="col-sm-3">
+      {% if data.status == '2' %}
+
+        <h4><p class="text-right">Date Cancelled: {{data.close_date|date:'d F o'}}</p></h4>               
+      {% elif data.status == '5' %}
+        <h4><p class="text-right">Date Closed: {{data.close_date|date:'d F o'}}</p></h4>              
+      {% endif %}
+    </div>      
+  </div>
+{% endif %}
+  
+  <div class="row" id="forReadOnlyNcr" style="background-color:#C0C0C0;">
+    &nbsp;
+    <div class="col-sm-5">
+      <h3><strong>NONCONFORMANCE REPORT<br>&nbsp;&nbsp;&nbsp;&nbsp;AND CORRECTIVE ACTION(Edit)</strong></h3>        
+    </div>
+    <div class="col-sm-7 date">
+    {% if ncr_no_size == 'S' %}
+      <strong><h2><small>Rec No:</small>{{data.ncr_no}}</h1></strong>
+    {%else%}
+      <strong><h4><small>Rec No:</small>{{data.ncr_no}}</h4></strong>
+    {%endif%}  
+      <center><h5>YYYY-MM-DD-Section-Project-Serial</h5></center>  
+    </div>
+  </div>
+  
+  <div class="row" id="forUpdateNcr" style="background-color:powderblue;">
+    &nbsp;
+    <div class="col-sm-5">
+      <h3><strong>NONCONFORMANCE REPORT<br>&nbsp;&nbsp;&nbsp;&nbsp;AND CORRECTIVE ACTION(New)</strong></h3>        
+    </div>
+    <div class="col-sm-7 date">
+      <div class="input-group date">
+        {{form.ncr_issue_date}}<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+      </div> 
+      - {{form.dept}} - {{form.project}}
+      <center><h5>YYYY-MM-DD-Section-Project-Serial</h5></center>  
+    </div>
+  </div>
+
+  <div class="row" id="forReadOnlySrc" style="background-color:#E5E4E2;">
+    <div class="col-sm-12">
+      {{form.source.label}}&nbsp;
+      {% if data.source == '1' %}
+          <input type="radio" name="optionsRadiosSourceJob" id="optionsRadiosSourceJob" value="2" checked disabled>                
+      {% else %}    
+          <input type="radio" name="optionsRadiosSourceJob" id="optionsRadiosSourceJob" value="1" disabled>
+      {% endif %}
+      <label for="optionsRadiosSourceJob">Job</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+      
+      {% if data.source == '2' %}
+          <input type="radio" name="optionsRadiosSourceAudit" id="optionsRadiosSourceAudit" value="2" checked disabled>          
+      {% else %}    
+          <input type="radio" name="optionsRadiosSourceAudit" id="optionsRadiosSourceAudit" value="2" disabled>
+      {% endif %}
+      <label for="optionsRadiosSourceAudit">Audit</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      
+      {% if data.source == '3' %}
+          <input type="radio" name="optionsRadiosSourceCustomer" id="optionsRadiosSourceCustomer" value="3" checked disabled>          
+      {% else %}    
+          <input type="radio" name="optionsRadiosSourceCustomer" id="optionsRadiosSourceCustomer" value="3" disabled>
+      {% endif %}
+      <label for="optionsRadiosSourceCustomer">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      
+      {% if data.source == '4' %}
+          <input type="radio" name="optionsRadiosSourceManagementAction" id="optionsRadiosSourceManagementAction" value="4" checked disabled>          
+      {% else %}    
+          <input type="radio" name="optionsRadiosSourceManagementAction" id="optionsRadiosSourceManagementAction" value="4" disabled>
+      {% endif %}
+      <label for="optionsRadiosSourceManagementAction">Management Action</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      
+      {% if data.source == '5' %}
+          <input type="radio" name="optionsRadiosSourceOthers" id="optionsRadiosSourceOthers" value="5" checked disabled>          
+      {% else %}    
+          <input type="radio" name="optionsRadiosSourceOthers" id="optionsRadiosSourceOthers" value="5" disabled>
+      {% endif %}
+      <label for="optionsRadiosSourceOthers">Others</label>
+      
+      <input type="textbox" class="form-control" name="other_source" value="{{data.other_source}}" disabled/>
+    </div>    
+  </div>
+  
+  <div class="row" id="forUpdateSrc" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      {{form.source.label}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.0}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.1}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.2}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.3}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.4}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.source.5}}&nbsp;{{form.other_source}}
+    </div>    
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        A. Nonconformance detail description</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" id="forReadOnlyA" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.classification.label}}
+         
+         {% if data.classification == '1' %}
+             <input type="radio" id="classification_1_read_only" value="1" checked disabled>          
+         {% else %}    
+             <input type="radio" id="classification_1_read_only" value="1" disabled>
+         {% endif %}
+         <label for="classification_1_read_only">Minor</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+      
+         {% if data.classification == '2' %}
+             <input type="radio" id="classification_2_read_only" value="2" checked disabled>          
+         {% else %}    
+             <input type="radio" id="classification_2_read_only" value="2" disabled>
+         {% endif %}
+         <label for="classification_2_read_only">Major</label>
+      </div>
+      <div class="row">
+        <textarea id="nc_detail_description_read_only" class="form-control"  rows="7" cols="75" disabled/>
+          {{data.nc_detail_description}}
+        </textarea>         
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Discovered by:</strong>    <!--discovered disabled disabled-->     
+        
+      </div> 
+      <div class="row">
+        {{form.nc_discovered_by.label}}<input type="textbox" class="form-control" id="nc_discovered_by_read_only" value="{{nc_discovered_by}}" disabled/>
+        
+        <!-- 2024/05/08 -->        
+        {{form.nc_discoverer_email.label}}
+        <input type="textbox" class="form-control" id="discovered_by_email_read_only" value="{{nc_discoverer_email}}" disabled>
+
+
+        
+      </div> 
+      <div class="row">
+        <strong>Confirmed by: </strong>                     
+      </div>
+      <div class="row">
+        {{form.nc_conformed_by.label}}<input type="textbox" class="form-control" id="nc_conformed_by_read_only" value="{{nc_conformed_by_name}}" disabled/>
+        &nbsp;{{form.nc_conformed_date.label}}<input type="textbox" class="form-control" id="nc_conformed_date_read_only" size="10" value="{{data.nc_conformed_date|date:"Y-m-d"}}" disabled/> 
+        {% if data.nc_conforme_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif data.nc_conforme_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}    
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" id="forUpdateA" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.classification.label}}{{form.classification.0}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.classification.1}} 
+      </div>
+      <div class="row">
+        {{form.nc_detail_description}}    
+      </div>
+      &nbsp;
+    </div>  
+    
+    <div class="col-sm-6">
+      <div class="row form-horizontal">
+        <strong>Discovered by:</strong>     
+      </div> 
+      <div class="row">
+        {{form.nc_discovered_by.label}}{{form.nc_discovered_by}} 
+        {{form.nc_discoverer_email.label}}{{form.nc_discoverer_email}}
+      </div>
+
+              
+
+      
+      <div class="row">
+        <strong>Conformed by: </strong>                     
+      </div>
+      <div class="row">
+        {{form.nc_conformed_by.label}}{{form.nc_conformed_by}}&nbsp;{{form.nc_conformed_date.label}}{{form.nc_conformed_date}}  
+        
+        <datalist id="browsers">
+
+        </datalist>          
+
+
+      </div>   
+    </div>     
+  </div>
+  
+  <div class="row" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row">
+        <h5><strong>
+        B. Immediate Correction</strong></h5>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" id="forReadOnlyB" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">
+        <textarea id="ic_description_read_only" class="form-control" rows="4" cols="75" disabled/>
+          {{data.ic_description}}
+        </textarea> 
+      </div>  
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        <!--       
+        {% if data.ic_description == '' or data.ic_description == None %}
+          {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>
+        {% else %}
+          {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>  
+        {% endif %}      
+        ---> 
+        
+        {% if data.ic_create_date|date:"Y-m-d" != '' %}
+            {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>                                      
+        {% elif data.ncr_no != '' and data.nc_conforme_status == '1' and data.ic_approve_status != '1' and data.ic_approve_status != '0' %}
+            {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>  
+        
+        {% else %}
+          {{form.ic_incharge.label}}{{form.ic_incharge}}&nbsp;{{form.ic_create_date.label}}{{form.ic_create_date}}       
+        {% endif %}      
+        
+        
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:&nbsp<input type="textbox" class="form-control" id="ic_approve_by_read_only" value="{{ic_approve_by_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="ic_approve_date_read_only" size="10" value="{{data.ic_approve_date|date:"Y-m-d"}}" disabled/>  
+        {% if data.ic_approve_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif data.ic_approve_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}          
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" id="forUpdateB" style="background-color:powderblue;">
+    <div class="col-sm-6">      
+      <div class="row">
+        {{form.ic_description}}  
+      </div>  
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">        
+        
+        <!--
+        {% if data.ncr_no != '' and data.nc_conforme_status == '1' and data.ic_approve_status != '1' and data.ic_approve_status != '0' %}
+            {{form.ic_incharge.label}}{{form.ic_incharge}}&nbsp;{{form.ic_create_date.label}}{{form.ic_create_date}}          
+        {% else %}
+          {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>  
+        {% endif %}      
+        -->
+        
+        {{form.ic_incharge.label}} <input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>  
+        
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:&nbsp{{form.ic_approve_by}}&nbsp;Date:&nbsp{{form.ic_approve_date}}
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row">
+        <h5><strong>
+        <!--for 5Whys guided-->
+        C. Root Cause Analysis(5 Whys, Fishbone, etc) <a href="https://shigroup-my.sharepoint.com/personal/ba00620467_shi-g_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fba00620467%5Fshi%2Dg%5Fcom%2FDocuments%2F2%2E0%20ISO9001%5F2015v%2F5%2E0%20NCR%20Web%20Application&originalPath=aHR0cHM6Ly9zaGlncm91cC1teS5zaGFyZXBvaW50LmNvbS86ZjovZy9wZXJzb25hbC9iYTAwNjIwNDY3X3NoaS1nX2NvbS9FbGpYLXNsdmVfaEtxTVY4M0xLVHVkZ0IzWV9lZ2hFdWpaaGV5LTl6emFmQ1VRP3J0aW1lPWpuc2JxMjV6MlVn/" target="_blank">[RCA How To]</a></strong></h5>        
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" id="forReadOnlyC" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">
+        <textarea name="rca_description" id="rca_description_read_only" class="form-control"  rows="10" cols="75" disabled/>
+          {{data.rca_description}}
+        </textarea> 
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+         {{form.ca_necessary.label}}
+         {% if data.ca_necessary == '1' %}
+             <input type="radio" id="ca_necessary_read_only0" value="0" checked disabled>          
+         {% else %}    
+             <input type="radio" id="ca_necessary_read_only0" value="0" disabled>
+         {% endif %}
+         <label for="ca_necessary_0_read_only">Yes, Proceed to D</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+         
+         {% if data.ca_necessary == '0' %}
+             <input type="radio" id="ca_necessary_read_only1" value="1" checked disabled>          
+         {% else %}    
+             <input type="radio" id="ca_necessary_read_only1" value="1" disabled>
+         {% endif %}
+         <label for="optionsRadioNo">No</label>
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        In-Charge:&nbsp<input type="textbox" class="form-control" id="rca_incharge_read_only" value="{{rca_incharge_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="rca_create_date_read_only" size="10" value="{{data.rca_create_date|date:"Y-m-d"}}" disabled/> 
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:&nbsp<input type="textbox" class="form-control" id="rca_approve_by_read_only" value="{{rca_approve_by_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="rca_approve_date_read_only" size="10" value="{{data.rca_approve_date|date:"Y-m-d"}}" disabled/>
+                
+        {% if data.rca_approve_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif data.rca_approve_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}          
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" id="forUpdateC" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+        {{form.rca_description}}
+      </div>
+      <div class="row">
+      
+      <!--
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+      {{form.ca_necessary.label}}&nbsp;{{form.ca_necessary.0}}&nbsp;{{form.ca_necessary.1}}
+      -->
+      {% if data.classification == '2' %}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+          {{form.ca_necessary.label}}
+          <input type="radio" id="ca_necessary_read_only0" value="0" checked>          
+          <label for="ca_necessary_0_read_only">Yes, Proceed to D</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+          <input type="radio" id="ca_necessary_read_only1" value="1" disabled>
+          <label for="optionsRadioNo">No</label>
+      {% else %}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+          {{form.ca_necessary.label}}&nbsp;{{form.ca_necessary.0}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.ca_necessary.1}} 
+      {% endif %}     
+         
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      
+      <!--
+      <div class="row">
+        Incharge:&nbsp{{form.rca_incharge}}&nbsp;Date:&nbsp{{form.rca_create_date}}
+      </div> 
+      -->
+      <div class="row">
+        In-Charge:&nbsp<input type="textbox" class="form-control" id="rca_incharge_upd" value="{{rca_incharge_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="rca_create_date_upd" size="10" value="{{data.rca_create_date|date:"Y-m-d"}}" disabled/> 
+      </div> 
+      
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:&nbsp{{form.rca_approve_by}}&nbsp;Date:&nbsp{{form.rca_approve_date}}
+      </div>   
+    </div>          
+  </div>
+  
+  <div id="forHeaderD" class="row" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row">
+        <h5><strong>
+        D. Corrective Action To The Cause</strong></h5>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" id="forReadOnlyD" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{form.ca_target_date.label}}<input type="textbox" class="form-control" id="ca_target_date_read_only" size="10" value="{{data.ca_target_date|date:"Y-m-d"}}" disabled/>
+      </div>
+      <div class="row">
+        <textarea name="ca_description" id="ca_description_read_only" class="form-control"  rows="4" cols="75" disabled/>
+          {{data.ca_description}}
+        </textarea>       
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Checked by:</strong>
+      </div> 
+      <div class="row">
+        {{form.ca_checked_by_sh.label}}<input type="textbox" class="form-control" id="ca_checked_by_sh_read_only" value="{{ca_checked_by_sh_name}}" disabled/>&nbsp;{{form.ca_check_date_by_sh.label}}<input type="textbox" class="form-control" id="ca_check_date_by_sh_read_only" size="10" value="{{data.ca_check_date_by_sh|date:"Y-m-d"}}" disabled/> 
+        {% if data.ca_check_by_sh_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif data.ca_check_by_sh_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}    
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">
+      
+      
+          <!-- Start modifying for additional request Edric Marinas 2024/04/17 -->
+          <!--{{form.ca_approved_by_mgr.label}}&nbsp<input type="textbox" class="form-control" id="ca_approved_by_mgr_read_only" value="{{ca_approved_by_mgr_name}}" disabled/>&nbsp;{{form.ca_approved_date_by_mgr.label}}&nbsp<input type="textbox" class="form-control" id="ca_approved_date_by_mgr_read_only" size="10" value="{{data.ca_approved_date_by_mgr|date:"Y-m-d"}}" disabled/> -->
+          
+          {% if data.ca_check_by_sh_status == '1' and data.ca_approved_date_by_mgr == None %}
+              {{form.ca_approved_by_mgr.label}}&nbsp{{form.ca_approved_by_mgr}}&nbsp;{{form.ca_approved_date_by_mgr.label}}&nbsp{{form.ca_approved_date_by_mgr}}
+
+          {% else %}
+              {{form.ca_approved_by_mgr.label}}&nbsp<input type="textbox" class="form-control" id="ca_approved_by_mgr_read_only" value="{{ca_approved_by_mgr_name}}" disabled/>&nbsp;{{form.ca_approved_date_by_mgr.label}}&nbsp<input type="textbox" class="form-control" id="ca_approved_date_by_mgr_read_only" size="10" value="{{data.ca_approved_date_by_mgr|date:"Y-m-d"}}" disabled/> 
+          {%endif%}
+         <!-- End modifying for additional request Edric Marinas 2024/04/17 -->
+                
+      
+      
+        {% if data.ca_approve_by_mgr_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif data.ca_approve_by_mgr_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}                  
+      </div>   
+    </div>          
+  </div>
+   
+  <div class="row" id="forUpdateD" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {{form.ca_target_date.label}}        
+        <div class="input-group date">
+        {{form.ca_target_date}} <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+        </div>       
+      </div>
+      <div class="row">
+        {{form.ca_description}}   
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Checked by:</strong>
+      </div> 
+      <div class="row">
+        {{form.ca_checked_by_sh.label}}{{form.ca_checked_by_sh}}&nbsp;{{form.ca_check_date_by_sh.label}}{{form.ca_check_date_by_sh}}
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">
+        {{form.ca_approved_by_mgr.label}}&nbsp{{form.ca_approved_by_mgr}}&nbsp;{{form.ca_approved_date_by_mgr.label}}&nbsp{{form.ca_approved_date_by_mgr}}
+      </div>   
+    </div>          
+  </div>
+  
+  <div id="forHeaderE" class="row" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+        <h5><strong>
+        E. Result Of Action</strong></h5>         
+      </div>  
+    </div>  
+  </div>
+  
+  <div class="row" id="forReadOnlyE" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">        
+        <textarea name="ra_description" id="ra_description_read_only" class="form-control"  rows="4" cols="75" disabled/>
+          {{data.ra_description}}
+        </textarea>    
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.ra_action_effective.label}}&nbsp;
+         {% if data.ra_action_effective == '1' %}
+             <input type="radio" id="ra_action_effective_1_read_only" value="0" checked disabled>          
+         {% else %}    
+             <input type="radio" id="ra_action_effective_1_read_only" value="0" disabled>
+         {% endif %}
+         <label for="ra_action_effective_0_read_only">Yes, proceed to F</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+      
+         {% if data.ra_action_effective == '0' %}
+             <input type="radio" id="ra_action_effective_0_read_only" value="1" checked disabled>          
+         {% else %}    
+             <input type="radio" id="ra_action_effective_0_read_only" value="1" disabled>
+         {% endif %}
+         <label for="ra_action_effective_1_read_only"> No, Return to C </label>
+      </div>
+      <div class="row">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;
+         {% if data.ra_action_effective == '2' %}
+             <input type="radio" id="ra_action_effective_2_read_only" value="2" checked disabled>          
+         {% else %}    
+             <input type="radio" id="ra_action_effective_2_read_only" value="2" disabled>
+         {% endif %}
+         <label for="ra_action_effective_2_read_only">  For follow-up on date </label>
+         
+         &nbsp;
+         <input type="textbox" class="form-control" id="ra_followup_date_read_only" size="10" value="{{data.ra_followup_date|date:"Y-m-d"}}" disabled/>         
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        {{form.ra_check_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_by_staff_read_only" value="{{ra_check_by_staff_name}}" disabled/>&nbsp;{{form.ra_check_date_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_date_by_staff_read_only" size="10" value="{{data.ra_check_date_by_staff|date:"Y-m-d"}}" disabled/>  
+        
+      
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        {{form.ra_check_by_sh.label}}<input type="textbox" class="form-control" id="ra_check_by_sh_read_only" value="{{ra_check_by_sh_name}}" disabled/>&nbsp;{{form.ra_check_date_by_sh.label}}<input type="textbox" class="form-control" id="ra_check_date_by_sh_read_only" size="10" value="{{data.ra_check_date_by_sh|date:"Y-m-d"}}" disabled/>
+        
+        {% if data.ra_check_by_sh_status == '1' %}
+          <span id="s1" class="glyphicon glyphicon-ok"></span>          
+        {% elif data.ra_check_by_sh_status == '0' %}
+          <span id="s2" class="glyphicon glyphicon-remove"></span>    
+        {% endif %}
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" id="forUpdateE" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div id="ra_description_upd" class="row">
+        {{form.ra_description}}  
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.ra_action_effective.label}}&nbsp;{{form.ra_action_effective.0}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.ra_action_effective.1}}
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.ra_action_effective.2}}&nbsp;        
+        <div class="input-group date">
+          {{form.ra_followup_date}}<span class="input-group-addon"><i class="glyphicon glyphicon-calendar" id="ra_followup_date_picker"></i></span>
+        </div> 
+        
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        {{form.ra_check_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_by_staff_upd" value="{{ra_check_by_staff_name}}" disabled/>&nbsp;{{form.ra_check_date_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_date_by_staff_read_only" size="10" value="{{data.ra_check_date_by_staff|date:"Y-m-d"}}" disabled/>  
+      </div> 
+      
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        {{form.ra_check_by_sh.label}}{{form.ra_check_by_sh}}&nbsp;{{form.ra_check_date_by_sh.label}}{{form.ra_check_date_by_sh}}
+      </div>   
+    </div>          
+  </div>
+   
+  <div id="forHeaderF" class="row" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+        <h5><strong>
+        F. Show Effectiveness</strong></h5>     
+      </div>  
+    </div>  
+  </div>
+   
+  <div class="row" id="forReadOnlyF" style="background-color:#E5E4E2;">
+    <div class="col-sm-6">
+      <div class="row">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.se_ro_updated.label}}&nbsp;
+         
+         
+          <!--Start modify for Additional Request Edric 2024/02/26
+          Replace radio type to checkbox
+          
+          -->
+         {% if data.se_ro_updated == '1' %}
+             <input type="checkbox" id="se_ro_updated_1_read_only" value="1" checked disabled>          
+         {% else %}    
+             <input type="checkbox" id="se_ro_updated_1_read_only" value="1" disabled>
+         {% endif %}
+         <label for="se_ro_updated_1_read_only">Yes</label>&nbsp;&nbsp;&nbsp;&nbsp; 
+         
+         
+         <!--
+         {% if data.se_ro_updated == '0' %}
+             <input type="checkbox" id="se_ro_updated_0_read_only" value="0" checked disabled>          
+         {% else %}    
+             <input type="checkbox" id="se_ro_updated_0_read_only" value="0" disabled>
+         {% endif %}
+         <label for="se_ro_updated_0_read_only">No</label>
+         
+          End modify for Additional Request Edric 2024/02/26-->
+     
+     
+     
+      </div>
+      <div class="row">
+        <textarea id="se_description_read_only" name="se_description_read_only" class="form-control" rows="4" cols="75" disabled/>
+          {{data.se_description}}
+        </textarea> 
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Approved by:</strong>
+      </div> 
+      <div class="row">
+      
+      
+      
+       <!-- Start modifying Edric Marinas 2024/04/17 -->
+       <!-- {{form.se_check_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_by_mgr_read_only" value="{{se_check_by_mgr_name}}" disabled/>&nbsp;{{form.se_check_date_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_date_by_mgr_read_only" size="10" value="{{data.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/>  -->
+              
+       {%if data.ra_check_by_sh_status == '1' and data.se_check_date_by_mgr == None  %}
+            {{form.se_check_by_mgr.label}}{{form.se_check_by_mgr}}&nbsp;{{form.se_check_date_by_mgr.label}}{{form.se_check_date_by_mgr}}
+    
+       {%else%}
+            {{form.se_check_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_by_mgr_read_only" value="{{se_check_by_mgr_name}}" disabled/>&nbsp;{{form.se_check_date_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_date_by_mgr_read_only" size="10" value="{{data.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/>
+            
+       {%endif%}
+        <!-- End modifying Edric Marinas 2024/04/17 -->
+
+
+
+
+        {% if data.se_check_by_mgr_status == '1' and form.se_description_read_only != '' %}
+          <span id="s3" class="glyphicon glyphicon-ok"></span>          
+        {% elif data.se_check_by_mgr_status == '0' and form.se_description_read_only != '' %}
+          <span id="s4" class="glyphicon glyphicon-remove"></span>    
+        {% endif %}
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">  
+      
+      
+      
+      <!-- Start modifying Edric Marinas 2024/04/17 -->
+      <!-- {{form.se_check_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_by_qa_read_only" value="{{se_check_by_qa_name}}" disabled/>&nbsp;{{form.se_check_date_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_date_by_qa_read_only" size="10" value="{{data.se_check_date_by_qa|date:"Y-m-d"}}" disabled/> -->
+      
+      
+        {%if data.ra_check_by_sh_status == '1' and data.se_check_date_by_qa == None %}
+             {{form.se_check_by_qa.label}}&nbsp{{form.se_check_by_qa}}&nbsp;{{form.se_check_date_by_qa.label}}&nbsp{{form.se_check_date_by_qa}}
+             
+        {%else%}
+              {{form.se_check_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_by_qa" value="{{se_check_by_qa_name}}" disabled/>&nbsp;{{form.se_check_date_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_date_by_qa_read_only" size="10" value="{{data.se_check_date_by_qa|date:"Y-m-d"}}" disabled/>
+        
+        {%endif%}
+      <!-- End modifying Edric Marinas 2024/04/17 -->
+        
+        
+        
+        
+        
+        
+        
+        
+        {% if data.se_check_by_qa_status == '1'%}
+          <span id="s5" class="glyphicon glyphicon-ok"></span>          
+        {% elif data.se_check_by_qa_status == '0'%}
+          <span id="s6" class="glyphicon glyphicon-remove"></span>    
+        {% endif %}        
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row" id="forUpdateF" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      <div class="row">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.se_ro_updated.label}}&nbsp;{{form.se_ro_updated.0}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.se_ro_updated.1}}
+      </div>
+      
+      <div id="se_description_read" class="row">
+        <textarea id="se_description_upd_read" class="form-control" rows="4" cols="75" disabled/>
+          {{data.se_description}}
+        </textarea> 
+      </div>
+      <div id="se_description_upd" class="row">
+        {{form.se_description}}     
+      </div>
+      
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Approved by:</strong>
+      </div> 
+      <div class="row">
+      
+      <!-- Start modifying for additional request 2024/04/17-->
+      <!-- {{form.se_check_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_by_mgr_read_only" value="{{se_check_by_mgr_name}}" disabled/>&nbsp;{{form.se_check_date_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_date_by_mgr_read_only" size="10" value="{{data.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/> -->
+      
+      
+      {%if data.ra_check_by_sh_status != '1' %}
+          {{form.se_check_by_mgr.label}}{{form.se_check_by_mgr}}&nbsp;{{form.se_check_date_by_mgr.label}}{{form.se_check_date_by_mgr}}
+      {%elif data.se_check_by_mgr_status == '1'%}
+          {{form.se_check_by_mgr.label}}{{form.se_check_by_mgr}}&nbsp;{{form.se_check_date_by_mgr.label}}{{form.se_check_date_by_mgr}}
+      {%else%}
+          {{form.se_check_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_by_mgr_read_only" value="{{se_check_by_mgr_name}}" disabled/>&nbsp;{{form.se_check_date_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_date_by_mgr_read_only" size="10" value="{{data.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/>
+      {%endif%}
+      <!-- End modifying for additional request 2024/04/17-->
+      
+      
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">
+      
+      
+      <!-- Start modifying for additional request 2024/04/17-->
+      <!-- {{form.se_check_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_by_qa_read_only" value="{{se_check_by_qa_name}}" disabled/>&nbsp;{{form.se_check_date_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_date_by_qa_read_only" size="10" value="{{data.se_check_date_by_qa|date:"Y-m-d"}}" disabled/> -->
+      
+      
+      {%if data.ra_check_by_sh_status != '1' %}
+          {{form.se_check_by_qa.label}}&nbsp{{form.se_check_by_qa}}&nbsp;{{form.se_check_date_by_qa.label}}&nbsp{{form.se_check_date_by_qa}}
+      {%else%}
+          {{form.se_check_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_by_qa_read_only" value="{{se_check_by_qa_name}}" disabled/>&nbsp;{{form.se_check_date_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_date_by_qa_read_only" size="10" value="{{data.se_check_date_by_qa|date:"Y-m-d"}}" disabled/>
+      {%endif%}
+      <!-- End modifying for additional request 2024/04/17-->
+      
+      
+      </div>   
+    </div>          
+  </div>
+
+ 
+  <div class="row" id="comments" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row">
+        {{form.comments.label}}
+      </div>
+      <div class="row">
+        {{form.comments}}          
+      </div>        
+    </div>      
+  </div>
+  
+  <br>  
+  &nbsp;
+  
+  <!--hidden fields-->
+  {{form.ncr_no}}
+  {{form.hidden_dept_id}}
+  {{form.hidden_mail_sent_date_1}}
+  {{form.hidden_mail_sent_date_2}}
+  {{form.hidden_mail_sent_date_3}}
+  
+  {{form.hidden_update_date}}
+  
+  {{form.nc_conforme_status}}
+  {{form.ic_approve_status}}
+  {{form.rca_approve_status}}
+  {{form.ca_check_by_sh_status}}
+  {{form.ca_approve_by_mgr_status}}
+  {{form.ra_check_by_sh_status}}
+  {{form.se_check_by_mgr_status}}
+  {{form.se_check_by_qa_status}}
+     
+   <!-- Start adding for Improvement Edric Marinas 2024/03/06-->
+    {{form.S_or_SN}}
+    
+   <!-- 2024/04/04 -->
+   {{form.hidden_request_cancel}}
+   {{form.hidden_cancel_reason}}
+   
+
+   
+  <input type="hidden" id="deny_reasonA" name="deny_reasonA" value="{{ deny_reasonA }}"> 
+  <input type="hidden" id="deny_reasonB" name="deny_reasonB" value="{{ deny_reasonB }}"> 
+  <input type="hidden" id="deny_reasonC" name="deny_reasonC" value="{{ deny_reasonC }}"> 
+  <input type="hidden" id="deny_reasonD" name="deny_reasonD" value="{{ deny_reasonD }}"> 
+  <input type="hidden" id="deny_reasonE" name="deny_reasonE" value="{{ deny_reasonE }}"> 
+  <input type="hidden" id="deny_reasonF" name="deny_reasonF" value="{{ deny_reasonF }}"> 
+  
+  <input type="hidden" id="is_denied_A" name="is_denied_A" value="{{ is_denied_A }}"> 
+  <input type="hidden" id="is_denied_B" name="is_denied_B" value="{{ is_denied_B }}"> 
+  <input type="hidden" id="is_denied_C" name="is_denied_C" value="{{ is_denied_C }}"> 
+  <input type="hidden" id="is_denied_D" name="is_denied_D" value="{{ is_denied_D }}"> 
+  <input type="hidden" id="is_denied_E" name="is_denied_E" value="{{ is_denied_E }}"> 
+  <input type="hidden" id="is_denied_F" name="is_denied_F" value="{{ is_denied_F }}"> 
+  
+  <input type="hidden" id="nc_conformed_by_name" name="nc_conformed_by_name" value="{{ nc_conformed_by_name }}">   
+  <input type="hidden" id="ic_approve_by_name" name="ic_approve_by_name" value="{{ ic_approve_by_name }}">   
+  <input type="hidden" id="rca_incharge_name" name="rca_incharge_name" value="{{ rca_incharge_name }}">   
+  <input type="hidden" id="rca_approve_by_name" name="rca_approve_by_name" value="{{ rca_approve_by_name }}">   
+  <input type="hidden" id="ca_checked_by_sh_name" name="ca_checked_by_sh_name" value="{{ ca_checked_by_sh_name }}">   
+  <input type="hidden" id="ra_check_by_sh_name" name="ra_check_by_sh_name" value="{{ ra_check_by_sh_name }}">   
+  <input type="hidden" id="ic_incharge_name" name="ic_incharge_name" value="{{ ic_incharge_name }}">   
+  <input type="hidden" id="ra_check_by_staff_name" name="ra_check_by_staff_name" value="{{ ra_check_by_staff_name }}">   
+  <input type="hidden" id="ca_approved_by_mgr_name" name="ca_approved_by_mgr_name" value="{{ ca_approved_by_mgr_name }}">
+  <input type="hidden" id="se_check_by_mgr_name" name="se_check_by_mgr_name" value="{{ se_check_by_mgr_name }}">   
+  <input type="hidden" id="se_check_by_qa_name" name="se_check_by_qa_name" value="{{ se_check_by_qa_name }}">   
+  
+  {{form.rev_no}}  
+  {{form.process}} 
+  
+  {{form.reason_action_not_effective}}
+  
+  {{form.is_A_on_edit_mode}}
+  {{form.is_B_on_edit_mode}}
+  {{form.is_C_on_edit_mode}}
+  {{form.is_D_on_edit_mode}}
+  
+  {{form.status}}
+  
+  {{form.hidden_update_date}}
+  
+</div>
+
+</form><<br><br><br>
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+    
+    <script>
+        function cancelNCRmodal(){
+            var button = document.getElementById("cancel_button_modal");
+            button.click();
+            $("#cancelNCRmodal").modal("show");
+        }
+
+
+        document.onreadystatechange = function() {
+            if (document.readyState !== "complete") {
+                document.querySelector("body").style.visibility = "hidden";
+                document.querySelector("#loader").style.visibility = "visible";
+            } else {
+                document.querySelector("#loader").style.display = "none";
+                document.querySelector("body").style.visibility = "visible";
+            }
+        };
+    </script>
+    
+    <!--<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>-->
+      <script src="{% static 'js/v3.0.3_bootstrap.min.js' %}"> </script>
+      
+    <script>
+    
+    
+    let se_ro_updated_0 = document.getElementById("se_ro_updated_0")
+    
+    
+    
+    $("#id_dept").change(function () {   
+      
+      var deptId = $(this).val();  // get the selected section ID from the HTML input
+      
+      var url = $("#ncrCreateForm").attr("data-projects-url");  // get the url of the `load_projects` view
+      
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/NCRMgmntSystem/ajax/load-projects/)
+        data: {
+          'dept': deptId       // add the dept id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_project` view function
+          $("#id_project").html(data);  // replace the contents of the project input with the data that came from the server         
+        }
+      });
+      
+      var url_members = $("#ncrCreateForm").attr("data-members-url");  // get the url of the `load_members` view
+      
+      $.ajax({                       // initialize an AJAX request
+        url: url_members,                    // set the url of the request (= localhost:8000/NCRMgmntSystem/ajax/load-projects/)
+        data: {
+          'dept': deptId       // add the dept id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_project` view function
+          $("#ic_incharge").html(data);  // replace the contents of the project input with the data that came from the server
+          
+        }
+      });
+      
+      var url_checkers = $("#ncrCreateForm").attr("data-checkers-url");  // get the url of the `load_checkers` view
+      
+      $.ajax({                 // initialize an AJAX request
+        url: url_checkers,     // set the url of the request (= localhost:8000/NCRMgmntSystem/ajax/load-projects/)
+        data: {
+          'dept': deptId       // add the dept id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_project` view function
+          $("#nc_conformed_by").html(data);  // replace the contents of the project input with the data that came from the server          
+        }            
+      });      
+
+    });
+    
+    $('#rca_description').keyup(function() { 
+    
+        if ( $.trim($('#rca_description').val()) != '') {
+            $("#ca_necessary_0").attr("disabled", false);
+            $("#ca_necessary_1").attr("disabled", false);             
+        } else {
+            $("#ca_necessary_0").attr("disabled", true);
+            $("#ca_necessary_1").attr("disabled", true);   
+            $("#ca_necessary_0").attr("checked", false);
+            $("#ca_necessary_1").attr("checked", false);               
+        }
+    });
+        
+    $('#ra_description').keyup(function() {     
+        if ( $.trim($('#ra_description').val()) != '') {
+            $("#ra_action_effective_0").attr("disabled", false);
+            $("#ra_action_effective_1").attr("disabled", false); 
+            $("#ra_action_effective_2").attr("disabled", false);    
+        } else {
+            $("#ra_action_effective_0").attr("disabled", true);
+            $("#ra_action_effective_1").attr("disabled", true);   
+            $("#ra_action_effective_2").attr("disabled", true);   
+            
+            $("#ra_action_effective_0").attr("checked", false);
+            $("#ra_action_effective_1").attr("checked", false);   
+            $("#ra_action_effective_2").attr("checked", false);   
+        }
+    });
+    
+    $('input[name="source"]:radio').change(function () {
+         selected_value = $("input[name='source']:checked").val();     
+         
+         if(selected_value == '5'){
+            $("#other_source").attr("disabled", false);
+            
+         }else{
+            $("#other_source").attr("disabled", true);
+            $("#other_source").val("");
+         }      
+         
+     });
+     
+     $('input[name="ca_necessary"]:radio').change(function () {
+         selected_ca_necessary = $("input[name='ca_necessary']:checked").val();   
+         
+         if(selected_ca_necessary == '1'){ 
+             $("#ca_target_date").attr("disabled", false);   
+             $("#ca_description").attr("disabled", false);   
+             $("#ca_approved_by_mgr").attr("disabled", false);                               
+            
+             $('#forHeaderD').show();
+             $('#forReadOnlyD').hide();
+             $('#forUpdateD').show();
+             
+             $('#forHeaderE').show();
+             $('#forReadOnlyE').show();
+             $('#forUpdateE').hide();
+             
+             $('#forHeaderF').show();
+             $('#forReadOnlyF').show();
+             $('#forUpdateF').hide();
+             
+         } else if(selected_ca_necessary == '0'){ 
+             $('#forHeaderD').hide();
+             $('#forReadOnlyD').hide();
+             $('#forUpdateD').hide();
+
+             $('#forHeaderE').hide();
+             $('#forReadOnlyE').hide();
+             $('#forUpdateE').hide();
+
+             $('#forHeaderF').hide();
+             $('#forReadOnlyF').hide();
+             $('#forUpdateF').hide();
+         
+         }else{
+             $('#forHeaderD').show();
+             $('#forReadOnlyD').show();
+             $('#forUpdateD').hide();
+
+             $('#forHeaderE').show();
+             $('#forReadOnlyE').show();
+             $('#forUpdateE').hide();
+
+             $('#forHeaderF').show();
+             $('#forReadOnlyF').show();
+             $('#forUpdateF').hide();                         
+         }
+
+    });
+
+    $(document).ready(function(){
+        init_screen();
+    
+    
+
+
+     //<!--Start Adding for additional request Edric Marinas 2024/02/26 -->  
+        if($('#se_ro_updated_0').is(':checked')){
+            $("#se_ro_updated_1")[0].checked = false;
+        }
+        else{
+            $("#se_ro_updated_1")[0].checked = true;
+        }
+        
+        success_msgSpan = document.getElementById('success_msgSpan');
+
+        if( success_msgSpan.innerHTML == "No change was made"){
+            success_msgSpan.style.color = "red";
+        }
+
+    });    
+    
+    function checkboxFunction(){
+        
+        $("#se_ro_updated_1").hide();
+        
+        
+        $("#se_ro_updated_0").click(function(){
+            if($(this).is(':checked')){
+                $("#se_ro_updated_1")[0].checked = false;
+            }
+            if($(this)[0].checked == false){
+                $("#se_ro_updated_1")[0].checked = true;
+            }
+        });
+    }
+    
+    
+    //<!--End Adding for additional request Edric Marinas 2024/02/26 --> 
+    
+    $(function () {
+        $("#modalForA").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditA" == activeElementId) {            
+                $('#forUpdateSrc').show();
+                $('#forReadOnlySrc').hide(); 
+                $('#forUpdateA').show();
+                $('#forReadOnlyA').hide();    
+            
+                $("#nc_conformed_date").val("");
+                $("#is_A_on_edit_mode").val("1");
+            }  
+        });
+        
+        $("#modalForB").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditB" == activeElementId) {            
+                $('#forUpdateB').show();
+                $('#forReadOnlyB').hide(); 
+                $("#ic_create_date").val("");
+                $("#ic_approve_date").val("");
+                $("#is_B_on_edit_mode").val("1");
+            }  
+        });
+        
+        $("#modalForC").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditC" == activeElementId) {    
+                if($('#rca_approve_status').val() == '1') {
+                    $('#forUpdateC').hide();
+                    $('#forReadOnlyC').show();     
+                } else {
+                    $('#forUpdateC').show();
+                    $('#forReadOnlyC').hide(); 
+                    $("#rca_create_date_upd").val("");
+                    $("#rca_approve_date").val("");                
+                    $("#is_C_on_edit_mode").val("1");   
+                }
+                                  
+                //<!--Start modify due to bug (D will also be editable although ca_necessary is set to 'No') Edric Marinas 2024/02/21 -->
+       
+                if ($("#ca_necessary_read_only0").is(':checked')){
+                    $('#forUpdateD').show();
+                    $('#forReadOnlyD').hide(); 
+                    $("#is_D_on_edit_mode").val("1");
+                
+                }
+                else if ($("#ca_necessary_read_only1").is(':checked')){
+                    $('#forUpdateD').hide();
+                    $('#forReadOnlyD').hide()
+                }
+                
+                /* <!-- 
+                these codeblock will cause 'D' to be editable. I put these codeblocks inside 
+                      'if statement' to check which ca_necessary is checked
+                $('#forUpdateD').show();
+                $('#forReadOnlyD').hide();
+                $("#is_D_on_edit_mode").val("1");-->*/
+                            
+                $("#ca_check_date_by_sh").val("");
+                $("#ca_approved_date_by_mgr").val("");                   
+          
+            }  
+        });
+        
+
+        
+        
+        
+        $("#modalForD").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditD" == activeElementId) {         
+               
+                $('#forUpdateD').show();
+                $('#forReadOnlyD').hide();             
+                $("#ca_check_date_by_sh").val("");
+                $("#ca_approved_date_by_mgr").val("");                   
+                $("#is_D_on_edit_mode").val("1");      
+                            
+                if($('#rca_approve_status').val() == '1') {
+                    $('#forUpdateC').hide();
+                    $('#forReadOnlyC').show();     
+                } else {
+                    $('#forUpdateC').show();
+                    $('#forReadOnlyC').hide();             
+                    $("#rca_create_date").val("");
+                    $("#rca_approve_date").val("");                
+                    $("#is_C_on_edit_mode").val("1");          
+                }
+            }  
+        });
+        
+        $("#modalForE").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditE" == activeElementId) {    
+            
+                $('#forUpdateF').hide();
+                $('#forReadOnlyF').show(); 
+
+                $("#se_description_read").hide();
+                $("#se_description_upd").show();
+             
+                $("#se_ro_updated_1_read_only").attr("checked", false);
+                $("#se_ro_updated_0_read_only").attr("checked", false);  
+                
+                $("#se_description_read_only").val("");
+                $("#se_check_by_mgr_read_only").val("");
+                $("#se_check_date_by_mgr_read_only").val("");
+                $("#se_check_by_qa_read_only").val("");
+                $("#se_check_date_by_qa_read_only").val("");
+  
+                $("#se_ro_updated_0").attr("checked", false);
+                $("#se_ro_updated_1").attr("checked", false); 
+             
+                $("#se_description_upd_read").val(""); 
+                $("#se_description").val("");
+                
+                $("#se_check_by_mgr").val("");
+                $("#se_check_date_by_mgr").val("");
+                $("#se_check_by_qa").val("");
+                $("#se_check_date_by_qa").val("");  
+                
+                $("#is_F_on_edit_mode").val("1");
+                
+                $('#forUpdateE').hide();
+                $('#forReadOnlyE').show(); 
+                
+                $("#ra_description_read_only").val("");
+                $("#ra_followup_date_read_only").val("");
+                $("#ra_check_by_staff_read_only").val("");
+                $("#ra_check_date_by_staff_read_only").val("");
+                $("#ra_check_by_sh_read_only").val("");
+                $("#ra_check_date_by_sh_read_only").val("");
+                
+                $("#ra_action_effective_0_read_only").attr("checked", false);
+                $("#ra_action_effective_1_read_only").attr("checked", false);
+                $("#ra_action_effective_2_read_only").attr("checked", false);
+                
+                $("#ra_description").val("");
+                $("#ra_followup_date").val("");
+                $("#ra_check_by_staff").val("");
+                $("#ra_check_date_by_staff").val("");
+                $("#ra_check_by_sh").val("");
+                $("#ra_check_date_by_sh").val("");
+                $("#ra_check_by_sh_status").val("");    
+                
+                $("#ra_action_effective_0").attr("checked", false);
+                $("#ra_action_effective_1").attr("checked", false);
+                $("#ra_action_effective_2").attr("checked", false);
+                
+                $("#is_E_on_edit_mode").val("1");
+                
+                $('#forUpdateD').show();
+                $('#forReadOnlyD').hide(); 
+                
+                $("#ca_check_date_by_sh").val("");
+                $("#ca_approved_date_by_mgr").val("");                  
+                $("#is_D_on_edit_mode").val("1");      
+                
+                $('#forUpdateC').show();
+                $('#forReadOnlyC').hide();            
+                
+                $("#rca_create_date").val("");
+                $("#rca_approve_date").val("");               
+                $("#is_C_on_edit_mode").val("1");     
+                
+                $("#s1").hide();
+                $("#s2").hide();
+                $("#s3").hide();
+                $("#s4").hide();
+                $("#s5").hide();
+                $("#s6").hide();  
+                
+            }  
+        });
+        
+        $("#modalForF").on("hide.bs.modal show.bs.modal", function(event) {
+            var activeElementId = $(document.activeElement).attr("id"); 
+            
+            if ("btnAllowEditF" == activeElementId) {        
+            
+                $('#forUpdateF').hide();
+                $('#forReadOnlyF').show(); 
+
+                $("#se_description_read").hide();
+                $("#se_description_upd").show();
+             
+                $("#se_ro_updated_1_read_only").attr("checked", false);
+                $("#se_ro_updated_0_read_only").attr("checked", false);  
+                    
+                $("#se_description_read_only").val("");
+                $("#se_check_by_mgr_read_only").val("");
+                $("#se_check_date_by_mgr_read_only").val("");
+                $("#se_check_by_qa_read_only").val("");
+                $("#se_check_date_by_qa_read_only").val("");
+  
+                $("#se_ro_updated_0").attr("checked", false);
+                $("#se_ro_updated_1").attr("checked", false); 
+             
+                $("#se_description_upd_read").val(""); 
+                $("#se_description").val("");
+                
+                $("#se_check_by_mgr").val("");
+                $("#se_check_date_by_mgr").val("");
+                $("#se_check_by_qa").val("");
+                $("#se_check_date_by_qa").val("");  
+                
+                $("#is_F_on_edit_mode").val("1");
+                               
+                $('#forUpdateE').hide();
+                $('#forReadOnlyE').show(); 
+                
+                $("#ra_description_read_only").val("");
+                $("#ra_followup_date_read_only").val("");
+                $("#ra_check_by_staff_read_only").val("");
+                $("#ra_check_date_by_staff_read_only").val("");
+                $("#ra_check_by_sh_read_only").val("");
+                $("#ra_check_date_by_sh_read_only").val("");
+                
+                $("#ra_action_effective_0_read_only").attr("checked", false);
+                $("#ra_action_effective_1_read_only").attr("checked", false);
+                $("#ra_action_effective_2_read_only").attr("checked", false);
+                
+                $("#ra_description").val("");
+                $("#ra_followup_date").val("");
+                $("#ra_check_by_staff").val("");
+                $("#ra_check_date_by_staff").val("");
+                $("#ra_check_by_sh").val("");
+                $("#ra_check_date_by_sh").val("");
+                $("#ra_check_by_sh_status").val("");    
+                
+                $("#ra_action_effective_0").attr("checked", false);
+                $("#ra_action_effective_1").attr("checked", false);
+                $("#ra_action_effective_2").attr("checked", false);
+                
+                $("#is_E_on_edit_mode").val("1");
+                $("input[id=is_E_on_edit_mode]").val("1")
+                
+                $('#forUpdateD').show();
+                $('#forReadOnlyD').hide(); 
+                
+                $("#ca_check_date_by_sh").val("");
+                $("#ca_approved_date_by_mgr").val("");                  
+                $("#is_D_on_edit_mode").val("1");      
+                
+                $('#forUpdateC').show();
+                $('#forReadOnlyC').hide();            
+                
+                $("#rca_create_date").val("");
+                $("#rca_approve_date").val("");               
+                $("#is_C_on_edit_mode").val("1");    
+                
+                $("#s1").hide();
+                $("#s2").hide();
+                $("#s3").hide();
+                $("#s4").hide();
+                $("#s5").hide();
+                $("#s6").hide();                
+            }  
+        });      
+        
+
+          
+        $("#btnContinueSave").click(function () {
+            var ncrNo = $('#id_ncr_no').val();  //acquire ncr_no 
+
+
+            if (ncrNo != '') {
+                var hidden_update_date = $('#hidden_update_date').val();          
+                var url = $("#ncrCreateForm").attr("get-latest-update-date-url");  
+                $.ajax({ 
+                    url: url, 
+                    data: {
+                        'ncr_no': ncrNo, 'hidden_update_date': hidden_update_date,
+                    },
+                    cache: false,
+                    success: function (data) {   
+                        if (data.isLatest == 'TRUE') {
+                            $("#process").val("save");
+                            if($('#ra_description').val() != '') { 
+                                if ($("input[name='classification']:checked").val() == '2' && $('#se_description').val() == '') {                
+                                    $("#confirm_1").modal("show");
+
+                                    document.getElementById("se_ro_updated_0").scrollIntoView({block:"center",behavior:"smooth"});         
+                                } else if ($("input[name='classification']:checked").val() == '2' && $("input[name='se_ro_updated']:checked").val() != '1') { 
+                                    
+                                    //<!--Start modifying 2024/04/19 Edric 
+                                    //$("#confirm_2").modal("show");-->
+                                    
+                                    
+                                    var S_or_SN = document.getElementById('S_or_SN');
+                                    if(S_or_SN.value == "S"){
+                                        $("#confirm_2_saveOnly").modal("show");
+                                        if(!se_ro_updated_0.checked){
+                                            se_ro_updated_0.scrollIntoView({block:"center",behavior:"smooth"}); 
+
+                                            se_ro_updated_0.className = "form-control radioErr";
+                                        }
+                                    }
+                                    else{
+                                        $("#confirm_2").modal("show");
+                                        if(!se_ro_updated_0.checked){
+                                            se_ro_updated_0.scrollIntoView({block:"center",behavior:"smooth"}); 
+
+                                            se_ro_updated_0.className = "form-control radioErr";
+                                        }
+                                        
+
+                                    }
+                                     
+                                    //<!--End modifying 2024/04/19 Edric  -->
+                                } else {
+                                    $("#ncrCreateForm").submit(); 
+                                }
+                            } else {
+                                $("#ncrCreateForm").submit(); 
+                            }                                                                                     
+                        } else {    
+                            $("#success_msg").html("");                   
+                            $("#err_msg").html("<h3><font color='red'>At " + data.latest_update_date + ", this NCR was already updated by " + data.latest_update_by + "<br>Click Reset button to acquire latest status.</font></h3>");
+                        }
+                    }
+                });   
+            } else {
+                $("#process").val("save");
+
+                if($('#ra_description').val() != '') { 
+                    if ($("input[name='classification']:checked").val() == '2' && $('#se_description').val() == '') {                
+                        $("#confirm_1").modal("show");   
+             
+                    } else if ($("input[name='classification']:checked").val() == '2' && $("input[name='se_ro_updated']:checked").val() != '1') { 
+                        
+                        //<!--Start modifying 2024/04/19 Edric 
+                        //$("#confirm_2").modal("show");-->
+                    
+                        var S_or_SN = document.getElementById('S_or_SN');
+                        if(S_or_SN.value == "S"){
+                            $("#confirm_2_saveOnly").modal("show");
+                            if(!se_ro_updated_0.checked){
+                                se_ro_updated_0.scrollIntoView({block:"center",behavior:"smooth"}); 
+
+                                se_ro_updated_0.className = "form-control radioErr";
+                            }
+                        }
+                        else{
+                            $("#confirm_2").modal("show");
+                            if(!se_ro_updated_0.checked){
+                                se_ro_updated_0.scrollIntoView({block:"center",behavior:"smooth"}); 
+                                se_ro_updated_0.className = "form-control radioErr";
+                            }
+                        }                
+                        //<!--End modifying 2024/04/19 Edric -->
+                        
+                        
+                    } else {
+                        $("#ncrCreateForm").submit(); 
+                    }
+                } else {
+                    $("#ncrCreateForm").submit(); 
+                }
+            }                 
+        }); 
+
+
+
+        $("#btnReset").click(function () {
+            $("#confirm_4").modal("show");   
+        });
+        
+        //<!-- Start modification for additional request Edric 20204/04/01 -->
+        
+        $("#SHdenyReason").click(function(){
+            $("#cancelNCRmodalDenied").modal("show");
+        });
+        
+        $("#NCR_cancel_message").click(function(){
+            $("#NCR_cancel_message_modal").modal("show");
+        });
+        
+        
+        //<!-- End modification for additional request Edric 20204/04/01 -->
+        
+        
+        
+        
+        $("#btnContinueReset").click(function () {    
+            $("#ncrCreateForm").attr("action", "{% url 'NCRMgmntSystem:ncr_create_view' %}");  
+            $("#reason_action_not_effective").val("")
+            $("#ncrCreateForm").submit(); 
+        });
+        
+        
+        
+        
+        
+        
+        
+        $('input[name="ra_action_effective"]:radio').change(function () {
+            $("#ra_followup_date_picker").prop('disabled', true);
+            $('#dateRangePicker > .form-control').prop('disabled', true);
+
+            selected_ra_action_effective_value = $("input[name='ra_action_effective']:checked").val();     
+        
+            if (selected_ra_action_effective_value == '0') {
+                $("#reason_action_not_effective").val($('#ra_description').val())
+            
+                $("#rca_incharge").val("");
+                $("#rca_create_date").val("");
+                $("#rca_approve_by").val("");
+                $("#rca_approve_date").val("");
+            
+                $("#ca_checked_by_sh").val("");
+                $("#ca_check_date_by_sh").val("");
+                $("#ca_approved_by_mgr").val("");
+                $("#ca_approved_date_by_mgr").val("");   
+            
+                selected_ca_necessary = $("input[name='ca_necessary']:checked").val(); 
+                
+                $("#ra_action_effective_0").attr("checked", false);
+                $("#ra_action_effective_1").attr("checked", false);
+                $("#ra_action_effective_2").attr("checked", false);    
+            
+                $("#ra_description").val("");
+                $("#ra_followup_date").val("");
+            
+                $('#forUpdateC').show();
+                $('#forReadOnlyC').hide(); 
+                $('#forUpdateD').show();
+                $('#forReadOnlyD').hide(); 
+                $('#forUpdateE').hide();
+                $('#forReadOnlyE').show(); 
+                $('#forUpdateF').hide();
+                $('#forReadOnlyF').show(); 
+             
+                $("#is_C_on_edit_mode").val("1");           
+                $("#is_D_on_edit_mode").val("1");           
+            
+            } else if (selected_ra_action_effective_value == '1') {
+                <!-- E --> 
+                $("#ra_followup_date").attr("disabled", true);    
+                $("#ra_followup_date").val("");
+                $("#ra_followup_date_picker").attr("disabled", true);   
+            
+                <!-- F --> 
+                $("#se_description").attr("disabled", false);
+                $("#se_ro_updated_0").attr("disabled", false);
+                $("#se_ro_updated_1").attr("disabled", false);
+             
+                $("#reason_action_not_effective").val("")
+             
+                $('#forUpdateF').show();
+                
+                //<!-- Modify for additional request-->
+                checkboxFunction();
+                
+                $('#forReadOnlyF').hide();
+                
+           } else if (selected_ra_action_effective_value == '2') {
+               $("#ra_followup_date").attr("disabled", false);    
+               $("#ra_followup_date").val("");
+               $("#ra_followup_date_picker").attr("disabled", true);   
+                
+               $("#se_description").attr("disabled", true);
+               $("#se_description").val("");
+               $("#se_ro_updated_0").attr("disabled", true);
+               $("#se_ro_updated_1").attr("disabled", true);    
+            
+               $("#reason_action_not_effective").val("")                
+           } else {
+               $("#ra_followup_date").attr("disabled", false);    
+               $("#ra_followup_date").val("");
+               $("#ra_followup_date_picker").attr("disabled", true);   
+        
+               $("#se_description").attr("disabled", true);
+               $("#se_description").val("");
+               $("#se_ro_updated_0").attr("disabled", true);
+               $("#se_ro_updated_1").attr("disabled", true);        
+            
+               $("#reason_action_not_effective").val("")
+           }          
+       });
+       
+       
+       
+       
+       
+       
+       
+    });
+    
+    
+
+
+
+//Start Adding Edric Marinas 2024/05/15
+
+let se_description = document.getElementById('se_description');
+let se_check_by_mgr = document.getElementById('se_check_by_mgr');
+let se_check_by_qa = document.getElementsByName('se_check_by_qa');
+let id_dept = document.getElementById('id_dept');
+let id_project = document.getElementById('id_project');
+let source_0 = document.getElementById('source_0');
+let source_1 = document.getElementById('source_1');
+let source_2 = document.getElementById('source_2');
+let source_3 = document.getElementById('source_3');
+let source_4 = document.getElementById('source_4');
+let classification_0 = document.getElementById('classification_0');
+let classification_1 = document.getElementById('classification_1');
+let nc_detail_description = document.getElementById('nc_detail_description');
+let nc_discovered_by = document.getElementById('nc_discovered_by');
+let nc_conformed_by = document.getElementById('nc_conformed_by');
+let ic_description = document.getElementById('ic_description');
+let ic_approve_by = document.getElementById('ic_approve_by');
+let rca_description = document.getElementById('rca_description');
+let ca_necessary_0 = document.getElementById('ca_necessary_0');
+let ca_necessary_1 = document.getElementById('ca_necessary_1');
+let ca_target_date = document.getElementById('ca_target_date');
+let ca_description = document.getElementById('ca_description');
+let ca_checked_by_sh = document.getElementById('ca_checked_by_sh');
+let ca_approved_by_mgr = document.getElementById('ca_approved_by_mgr');
+let ra_description = document.getElementById('ra_description');
+let ra_check_by_sh = document.getElementById('ra_check_by_sh');
+let ra_action_effective_2 = document.getElementById('ra_action_effective_2');
+let ra_followup_date = document.getElementById('ra_followup_date');
+
+
+function SubmitValidiation(){
+    var error_count = 0;
+    var element_scroll_into = ""
+    if(document.getElementById('forUpdateNcr').style.display != 'none'){
+          console.log("forUpdateNcr");
+          //let ncr_issue_date = document.getElementById('ncr_issue_date');  
+          if(id_dept.value == "" ){
+              id_dept.className = "form-control error";
+              element_scroll_into = id_dept;
+          }
+          else{
+              id_dept.className = "form-control";
+          }
+          if(id_project.value == ""){
+              id_project.className = "form-control error";
+              element_scroll_into = id_project
+          }
+          else{
+              id_project.className = "form-control";
+          }
+    }
+    if(document.getElementById('forUpdateSrc').style.display != 'none'){
+        console.log("forUpdateSrc");
+        other_source = document.getElementById('other_source');
+        if((source_4.checked && other_source.value != '') || source_0.checked || source_1.checked || source_2.checked || source_3.checked ){
+            source_0.className = "form-control radio-inline";
+            source_1.className = "form-control radio-inline";
+            source_2.className = "form-control radio-inline";
+            source_3.className = "form-control radio-inline";
+            source_4.className = "form-control radio-inline";
+            other_source.className = "form-control";
+        }
+        else{
+            element_scroll_into = other_source;
+            if(source_4.checked && other_source.value == ''){
+
+                other_source.className = "form-control error";    
+            }
+            else{
+                source_0.className = "form-control radioErr";
+                source_1.className = "form-control radioErr";
+                source_2.className = "form-control radioErr";
+                source_3.className = "form-control radioErr";
+                source_4.className = "form-control radioErr";
+            }
+        }
+    }
+    if(document.getElementById('forUpdateA').style.display != 'none'){
+        //console.log("A");
+        if(classification_0.checked || classification_1.checked){
+            classification_0.className = "form-control radio-inline";
+            classification_1.className = "form-control radio-inline";
+        }
+        else{
+            element_scroll_into = classification_0;
+            classification_0.className = "form-control radioErr";
+            classification_1.className = "form-control radioErr";
+        }
+        if(nc_detail_description.value === ""){
+            element_scroll_into = nc_detail_description;
+            nc_detail_description.className = "form-control error";
+        }
+        else{
+            nc_detail_description.className = "form-control";
+        }
+        if(nc_conformed_by.value === ""){
+            element_scroll_into = nc_conformed_by;
+            nc_conformed_by.className = "form-control error";
+        }
+        else{
+            nc_conformed_by.className = "form-control";
+        }
+        if(nc_discovered_by.value === ""){
+            element_scroll_into = nc_discovered_by;
+            nc_discovered_by.className = "form-control error";
+        }
+        else{
+            nc_discovered_by.className = "form-control";
+        }
+    }
+    if(document.getElementById('forUpdateB').style.display != 'none'){
+        console.log("B");
+        if(ic_description.value === ""){
+            element_scroll_into = ic_description;
+            ic_description.className = "form-control error";
+        }
+        else{
+            ic_description.className = "form-control";
+        }
+        if(ic_approve_by.value === ""){
+            element_scroll_into = ic_approve_by;
+            ic_approve_by.className = "form-control error";
+        }
+        else{
+            ic_approve_by.className = "form-control";
+        }
+    }
+    if(document.getElementById('forUpdateC').style.display != 'none'){
+        console.log("C");
+        //let rca_incharge_upd = document.getElementById('rca_incharge_upd');
+        let rca_approve_by = document.getElementById('rca_approve_by');
+        
+        if(rca_description.value === ""){
+            element_scroll_into = rca_description;
+            rca_description.className = "form-control error";
+        }
+        else{
+            rca_description.className = "form-control";
+        }
+        
+        if(!classification_2_read_only.checked){
+            if(ca_necessary_0.checked || ca_necessary_1.checked){
+                ca_necessary_0.className = "form-control radio-inline";
+                ca_necessary_1.className = "form-control radio-inline";
+            }
+            else{
+                element_scroll_into = ca_necessary_0;
+                ca_necessary_0.className = "form-control radioErr";
+                ca_necessary_1.className = "form-control radioErr";
+            }
+        }
+        
+        if(rca_approve_by.value === ""){
+            element_scroll_into = rca_approve_by;
+            rca_approve_by.className = "form-control error";
+        }
+        else{
+            rca_approve_by.className = "form-control";
+        }
+    }
+    if(document.getElementById('forUpdateD').style.display != 'none'){
+        console.log("D");
+        if(ca_target_date.value === ""){
+            element_scroll_into = ca_target_date;
+            ca_target_date.className = "form-control error";
+        }
+        else{
+            ca_target_date.className = "form-control";
+        }
+        if(ca_description.value === ""){
+            element_scroll_into = ca_description;
+            ca_description.className = "form-control error";
+        }
+        else{
+            ca_description.className = "form-control";
+        } 
+        if(ca_checked_by_sh.value === ""){
+            element_scroll_into = ca_checked_by_sh;
+            ca_checked_by_sh.className = "form-control error";
+        }
+        else{
+            ca_checked_by_sh.className = "form-control";
+        }
+        if(ca_approved_by_mgr.value === ""){
+            element_scroll_into = ca_approved_by_mgr;
+            ca_approved_by_mgr.className = "form-control error";
+        }
+        else{
+            ca_approved_by_mgr.className = "form-control";
+        }
+    }
+    var action_effective_proceed2F = false;
+    if(document.getElementById('forUpdateE').style.display != 'none'){
+        console.log("E");
+        if(ra_description.value === ""){
+            element_scroll_into = ra_description;
+            ra_description.className = "form-control error";
+        }
+        else{
+            ra_description.className = "form-control";
+        }
+        if(ra_check_by_sh.value === ""){
+            element_scroll_into = ra_check_by_sh;
+            ra_check_by_sh.className = "form-control error";
+        }
+        else{
+            ra_check_by_sh.className = "form-control";
+        }
+        if(ra_action_effective_2.checked){
+            if(ra_followup_date.value === ""){
+                element_scroll_into = ra_followup_date;
+                ra_followup_date.className = "form-control error";
+            }
+            else{
+                ra_followup_date.className = "form-control";
+            }
+        }
+        if (ra_action_effective_0.checked){
+            action_effective_proceed2F = true;
+        }  
+    }
+    if(document.getElementById('forUpdateF').style.display != 'none'){
+        console.log("F");
+        if(action_effective_proceed2F == true && se_description.value === ""){
+            element_scroll_into = se_description;
+            se_description.className = "form-control error";
+        }
+        else{
+            se_description.className = "form-control";
+        }        
+        if(se_check_by_mgr.value === ""){
+            element_scroll_into = se_check_by_mgr;
+            se_check_by_mgr.className = "form-control error";
+        }
+        else{
+            se_check_by_mgr.className = "form-control";
+        }
+        if(se_check_by_qa[0].value === ""){
+            element_scroll_into = se_check_by_qa[0];
+            se_check_by_qa[0].className = "form-control error";
+        }
+        else{
+
+            se_check_by_qa[0].className = "form-control";
+        }  
+    }
+    return element_scroll_into;
+}
+//End 2024/05/15
+
+//Start modifying for additional request Edric Marinas 2024/03/06
+function saveNF(a){
+    
+    
+    if (SubmitValidiation() != ""){
+        
+        try{
+            SubmitValidiation().scrollIntoView({block:"center",behavior:"smooth"});
+        }
+        catch(err){
+            console.log(SubmitValidiation());
+        }
+                
+        
+        $("#err_msg").html("<h4><font color=red>Highlighted fields are required.</font></h4>");
+    }
+    else if(a == "SN1"){
+    
+        $("#err_msg").html("");
+        a = "SN";
+        S_or_SN = document.getElementById('S_or_SN');
+        S_or_SN.value = a; 
+        var button = document.getElementById('btnContinueSave');
+        button.form.submit();
+    }
+    
+    else{ 
+        $("#err_msg").html("");
+        S_or_SN = document.getElementById('S_or_SN');
+        S_or_SN.value = a; 
+        
+        if(a == "S"){
+            document.getElementById('modal-body1').innerHTML = "If you click [<b>CONTINUE</b>] button, your inputs will be saved in database and no notification will be sent."
+        }
+        else if(a == "SN"){
+            document.getElementById('modal-body1').innerHTML = "If you click [<b>CONTINUE</b>] button, your inputs will be saved in database and email <br> notification will be send to checker/s."
+        }
+        $("#confirm_3").modal("show");
+    }
+     
+     
+     
+     
+}
+//End modifying for additional request Edric Marinas 2024/03/06
+
+
+//Start modifying for adiitional request Edric Marinas 2024/03/06
+function request_cancel(){
+    var hidden_request_cancel = document.getElementById('hidden_request_cancel');
+    var hidden_cancel_reason = document.getElementById('hidden_cancel_reason');
+    var cancelReason = document.getElementById('cancelReason');
+    
+    var S_or_SN = document.getElementById('S_or_SN');
+
+    S_or_SN.value = "S"; 
+    hidden_cancel_reason.value = cancelReason.value; 
+    hidden_request_cancel.value = "7";
+    
+    var button = document.getElementById('btnContinueSave');
+    button.form.submit();
+}
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

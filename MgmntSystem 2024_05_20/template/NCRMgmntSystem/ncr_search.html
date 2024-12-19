@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <title>NCOA03: NCR Search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  
+  <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/dist/css/bootstrap.min.css' %}">
+  <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+  <script src="{% static 'js/bootstrap.js' %}"> </script>
+  
+  
+  <style>
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }
+  </style>
+  
+  <style type="text/css">
+    .custom-radio-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .error {
+      border: 2px red solid;
+    }
+  
+    .error input, .error select {
+      border: 2px red solid;
+    }
+  
+    .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+   
+    .sdmifooter {border-top:1px solid rgba(0,0,0,0.2);width:100%;bottom:0;position:fixed;padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+
+.pagination {
+    margin-top: 1em;
+}
+
+.pagination a {
+    text-decoration: none;
+}
+
+.pagination-number {
+    padding: 0.5em 0.8em;
+    border-radius: 2px;
+    color: #fff;
+    background-color: #6D85C7;
+}
+
+.pagination-number:hover,
+.pagination-current {
+    background-color: #3354AA;
+}
+
+.pagination-action {
+    margin: 0 0.1em;
+    display: inline-block;
+    padding: 0.5em 0.5em;
+    color: #B9B9B9;
+    font-size: 1.3em;
+}
+
+.pagination-action:hover,
+.pagination-previous,
+.pagination-next {
+    color: #3354AA;
+}
+
+  </style>
+</head>
+
+<!--<body>-->
+<body onload="init_screen()">
+
+<!--
+<div class="jumbotron text-center" style="margin-bottom:0">
+-->
+
+
+<nav class="navbar navbar-inverse">
+    <div class="sdmiheader text-center" style="margin-bottom:0">
+      <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />  
+    </div>
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System ::: </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>　       
+        {% if isChecker or isSH or isGrpMgr or isQA %}
+            <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>　        
+        {% endif %}                  
+        <li class="active"><a href="#">Search NCR</a></li>　 
+        <li><a href="/ncr/projects_show">Show Project</a></li>　
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>　　                      
+      </ul>　  
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br><br><br><br><br><br><br><br>
+<form action="{% url 'NCRMgmntSystem:ncr_search_view' %}" method="POST" id="ncrSearchViewForm" data-projects-url="{% url 'NCRMgmntSystem:ajax_load_projects' %}" novalidate>
+
+{% csrf_token %}
+  
+<div class="container">
+
+{% if rec_cnt > 1 %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="blue"><p class="text-center">{{rec_cnt}} records found.</p></font></h3>  
+    </div>     
+  </div>
+{% elif rec_cnt == 1 %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="blue"><p class="text-center">1 record found.</p></font></h3>  
+    </div>     
+  </div>
+{% else %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3><font color="red"><p class="text-center">No record found.</p></font></h3>  
+    </div>     
+  </div>  
+{% endif %}
+
+  <div class="row">
+    <div class="col-md12">
+      <input type="submit" class="btn btn-primary active" name="search" id="search" value="Search" > 
+      </div>
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-md-5">
+      <div class="form-group">
+        
+      </div>      
+    </div>    
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="ncr_no">{{form.ncr_no.label}}</label>{{form.ncr_no}}{{form.ncr_no_like_cond}}
+      </div>      
+    </div>
+    <div class="col-md-6">
+      <div class="row form-inline">    
+        &nbsp;&nbsp;&nbsp;&nbsp;{{form.classification.label}}{{form.classification.0}}{{form.classification.1}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-md-6">
+      <div class="form-group">
+          <label for="dept">{{form.dept.label}}</label>{{form.dept}}        
+      </div>      
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="ic_incharge">{{form.ic_incharge.label}}</label>{{form.ic_incharge}}{{form.ic_incharge_like_cond}}              
+      </div>  
+    </div>
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="dept">{{form.project.label}}</label>{{form.project}}
+      </div>      
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="status">{{form.status.label}}</label>{{form.status}}
+      </div>  
+    </div>
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="ncr_no">{{form.progress.label}}</label>{{form.progress.0}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        {{form.progress.1}}
+      </div>      
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        {{form.progress.2}}{{form.progress.3}}
+      </div>      
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        </label>{{form.progress.4}}{{form.progress.5}}
+      </div>      
+    </div>
+  </div>
+  
+  <br>
+
+
+{% if rec_cnt >= 1 %}
+  
+{% if page_obj == None %}   
+{% else %}
+<tr>
+  <td class="FRAME">
+    <table class="table table-striped table-condensed">
+        <tr>
+          <th scope="col" style="width:2%">#</th>
+          <th scope="col" style="width:30%">NCR No.</th>
+          <th scope="col" style="width:40%">Description</th>
+          <th scope="col">Progress</th>
+          <th scope="col">Classification</th>
+          <th scope="col">Section</th>
+          <th scope="col">Project</th>
+          <th scope="col">In-charge</th>
+          <th scope="col">Status</th>
+        </tr>
+              
+    {% for ncrdetailmstr in page_obj %}
+        <tr>
+            <th >{{ ncrdetailmstr.row_num }}</th> 
+            <td >
+              {% if ncrdetailmstr.ic_incharge == logged_user_chapa_no and ncrdetailmstr.nc_conforme_status == '1' %}
+                  <a href="/ncr/ncr_create_view_upd/{{ ncrdetailmstr.ncr_no }}/0">{{ncrdetailmstr.ncr_no }}</a> 
+              {% elif ncrdetailmstr.ncr_issue_by == logged_user_chapa_no and ncrdetailmstr.nc_conforme_status != '1' %}
+                  <a href="/ncr/ncr_create_view_upd/{{ ncrdetailmstr.ncr_no }}/0">{{ncrdetailmstr.ncr_no }}</a>
+              {% elif ncrdetailmstr.rca_incharge == logged_user_chapa_no and ncrdetailmstr.ic_approve_status == '1' %}
+                  <a href="/ncr/ncr_create_view_upd/{{ ncrdetailmstr.ncr_no }}/0">{{ncrdetailmstr.ncr_no }}</a> 
+              {% elif ncrdetailmstr.ra_check_by_staff == logged_user_chapa_no and ncrdetailmstr.ca_approve_by_mgr_status == '1' %}
+                  <a href="/ncr/ncr_create_view_upd/{{ ncrdetailmstr.ncr_no }}/0">{{ncrdetailmstr.ncr_no }}</a>         
+              {% else %}
+                  {% if isChecker or isSH or isGrpMgr or isQA %}
+                    <a href="/ncr/ncr_verify_view/{{ncrdetailmstr.ncr_no}}/1/None/None/{{logged_user_chapa_no}}">{{ncrdetailmstr.ncr_no}}</a>   
+                  {% else %}   
+                    <a href="/ncr/ncr_verify_view/{{ncrdetailmstr.ncr_no}}/0/None/None/{{logged_user_chapa_no}}">{{ncrdetailmstr.ncr_no}}</a>  
+                  {% endif %}   
+              {% endif %}               
+            </td>
+            <td class="col-3">{{ncrdetailmstr.nc_detail_description}}</td>
+            <td >{{ ncrdetailmstr.progress }}</td>
+            <td >{{ ncrdetailmstr.classification }}</td>
+            <td >{{ ncrdetailmstr.dept_id }}</td>
+            <td >{{ ncrdetailmstr.project_id }}</td>   
+            <td >{{ ncrdetailmstr.ic_incharge_name }}</th>
+            <td >{{ ncrdetailmstr.status }}</td>                     
+        </tr>  
+    {% endfor %}
+              
+    </table>
+   
+ </td>
+ </tr>
+ </table>
+
+{% endif %}  
+
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+        <button type="submit" class="pagination-number" name="page" id="page" value="1"> << </button>
+        <button type="submit" class="pagination-number" name="page" id="page" value="{{ page_obj.previous_page_number }}"> < </button>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <button type="submit" class="pagination-number" name="page" id="page" value="{{ num }}"> {{ num }} </button>            
+        {% endif %}
+    {% endfor %}
+    
+    &nbsp;&nbsp;{{ page_obj.number }} / {{ page_obj.paginator.num_pages }} Page
+    
+    {% if page_obj.has_next %}
+        <button type="submit" class="pagination-number" name="page" id="page" value="{{ page_obj.next_page_number }}"> > </button>
+        <button type="submit" class="pagination-number" name="page" id="page" value="{{ page_obj.paginator.num_pages }}"> >> </button>
+    {% endif %}
+  </div>
+ 
+{% endif %}  
+</div>  
+
+    
+</form>
+<br><br><br>
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<script>
+
+
+    //<!-- $("#id_dept").change(function () {  -->
+    $("#dept").change(function () {    
+
+      var url = $("#ncrSearchViewForm").attr("data-projects-url");  // get the url of the `load_projects` view
+      var deptId = $(this).val();  // get the selected section ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/NCRMgmntSystem/ajax/load-projects/)
+        data: {
+          'dept': deptId       // add the dept id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_project` view function
+          $("#id_project").html(data);  // replace the contents of the project input with the data that came from the server
+        }
+      });
+
+    });
+    
+</script>
+
+</body>
+</html>

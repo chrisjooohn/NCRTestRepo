@@ -1,0 +1,90 @@
+{%if has_ncr != 0%}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.js' %}"> </script>
+    
+    <div class="modal fade" role="dialog" id="modal_delete2">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <center><h3 class="modal-title">
+                        Unable to delete project<br>
+                    </h3></center>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">                
+                        <label for="reason" class="col-form-label"></label><br>
+                        <div id="warning"> 
+                            Cannot delete this record with section code = '  <b style="color:red;">{{sectionCode}} </b> ' and project code = '  <b style="color:red;">{{projectCode}}</b> ' because ' <b style="color:red;">{{has_ncr}}</b> ' registered NCR is using it
+                        </div>
+                        <div id="ncr_list" style="display:none;overflow-y:auto;height:300px">
+                            <table class="table table-striped">
+                            
+                                <th>NCR no</th>
+
+                                <th>Status</th>
+                            
+
+                                {%for x in test%}
+                                    <tr>
+                                    <td>
+                                        <!--<a target="_blank" rel="noopener noreferrer" href="/ncr/ncr_create_view_history/{{x.ncr_no}}/0/projects_show" >{{x.ncr_no}}</a>-->
+                                        <a href="/ncr/ncr_create_view_history/{{x.ncr_no}}/{{x.rev_no}}/projects_show" >{{x.ncr_no}}</a>
+                                    </td>
+
+                                    <td>
+                                        {%if x.status == '1'%} Issued
+                                        {%elif x.status == '2'%} Cancelled
+                                        {%elif x.status == '3'%} Accepted
+                                        {%elif x.status == '4'%} On going
+                                        {%elif x.status == '5'%} Closed
+                                        {%elif x.status == '6'%} Delayed
+                                        {%elif x.status == '7'%} Cancel Request
+                                        {%endif%}
+                                    </td>
+                                    </tr>
+                                {%endfor%}
+
+                                </table>
+                        </div>
+                   </div>
+                </div>            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="mCancelBtn" data-dismiss="modal">Close</button>
+                </div>            
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <script>
+    $("#modal_delete2").modal("show");
+    $("#show_registeredNCR").click(function(){
+        if($("#ncr_list").css("display")=="none"){
+            $("#ncr_list").css("display","block");
+            $("#warning").css("display","none");
+            $("#show_registeredNCR").val("Back");
+        }
+        else if($("#ncr_list").css("display")== "block"){
+            console.log($("#ncr_list").css("display"));
+            $("#ncr_list").css("display","none");
+            $("#warning").css("display","block");
+            $("#show_registeredNCR").val("show registered NCR");
+        }
+    //    
+    });
+    </script>
+    
+    
+{%else%}
+    {{has_ncr}}
+{%endif%}
+
+
+
+
+
+

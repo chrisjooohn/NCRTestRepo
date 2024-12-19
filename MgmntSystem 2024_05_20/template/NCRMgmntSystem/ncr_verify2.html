@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>NCOA02: NCR Verify Detail</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.js' %}"> </script>
+  
+  <style>
+  .fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+  </style>
+  <style type="text/css">
+    .custom-radio-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+  
+    .error {
+        border: 2px red solid;
+    }
+  
+    .error input, .error select {
+        border: 2px red solid;
+    }
+  
+    .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+   
+    .sdmifooter {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+   
+    .glyphicon.glyphicon-ok {font-size: 25px;}
+   
+    .glyphicon.glyphicon-remove {font-size: 25px;}
+        
+        
+    #the-count {
+        float: right;
+        padding: 0.1rem 0 0 0;
+        font-size: 0.975rem;
+    }    
+
+  </style>
+  
+  <script type="text/javascript">
+      
+      function validateAccept(process) {
+          var ncrNo = $('#ncrNo').val();  // get the selected section ID from the HTML input
+          var hidden_update_date = $('#hidden_update_date').val();          
+          
+          var url = $("#ncrVerifyForm").attr("get-latest-update-date-url");  
+          
+          $.ajax({ 
+              url: url, 
+              data: {
+                  'ncr_no': ncrNo, 'hidden_update_date': hidden_update_date,
+              },
+              cache: false,
+              success: function (data) {   // `data` is the return of the `load_project` view function                 
+                  if (data.isLatest == 'TRUE') {
+                      if (process == 'acceptA1' || process == 'acceptB1') {
+                          if( $('#id_ic_incharge').val() == ''){
+                              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+                              $("#id_ic_incharge").css({"border":"2px red solid"});
+                          } else {
+                              $("#hidden_process").val(process);
+                              $("#ncrVerifyForm").submit();         
+                          }                       
+                      } else {
+                          $("#hidden_process").val(process);
+                          $("#ncrVerifyForm").submit();  
+                      }                                        
+                  } else {                  
+                      $("#success_msg").html("");                   
+                      $("#err_msg").html("<h3><font color='red'>At " + data.latest_update_date + ", this NCR was already updated by " + data.latest_update_by + "<br>Click Reset button to acquire latest status.</font></h3>");
+                  }
+              }
+          });        
+      } 
+      
+      function validateDeny(process) {      
+          var ncrNo = $('#ncrNo').val();  // get the selected section ID from the HTML input
+          var hidden_update_date = $('#hidden_update_date').val();          
+          var url = $("#ncrVerifyForm").attr("get-latest-update-date-url");  
+          
+          $.ajax({ 
+              url: url, 
+              data: {
+                  'ncr_no': ncrNo, 'hidden_update_date': hidden_update_date,
+              },
+              cache: false,
+              success: function (data) {                     
+                  if (data.isLatest == 'TRUE') {
+                       if (process == 'denyA1') {
+                           $("#denyReasonA1").modal("show");  
+                       } else if (process == 'denyB1') {
+                           $("#denyReasonB1").modal("show");  
+                       } else if (process == 'denyC1') {
+                           $("#denyReasonC1").modal("show");  
+                       } else if (process == 'denyD1') {
+                           $("#denyReasonD1").modal("show");  
+                       } else if (process == 'denyC2D2') {
+                           $("#denyReasonC2D2").modal("show");  
+                       } else if (process == 'denyE1F1') {
+                           $("#denyReasonE1F1").modal("show");  
+                       } else if (process == 'denyE2F2') {
+                           $("#denyReasonE2F2").modal("show");  
+                       } else if (process == 'denyE3F3') {
+                           $("#denyReasonE3F3").modal("show");                          
+                       }
+                       
+                  } else {                  
+                      $("#success_msg").html("");                   
+                      $("#err_msg").html("<h3><font color='red'>At " + data.latest_update_date + ", this NCR was already updated by " + data.latest_update_by + "<br>Click Reset button to acquire latest status.</font></h3>");
+                  }
+              }
+          });        
+      }
+                
+      function validateInputB() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptB");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputC() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptC");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputD1() {
+          if( $('#ca_approved_by_mgr').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#ca_approved_by_mgr").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptD1");
+              $("#ncrVerifyForm").attr("action", "{% url 'NCRMgmntSystem:ncr_verify_accept' %}");   
+              $("#ncrVerifyForm").attr("action", "/ncr/ncr_verify_accept");     
+
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputD2() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptD2");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputE() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptE");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputF1() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptF1");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+      
+      function validateInputF2() {
+          if( $('#id_ic_incharge').val() == ''){
+              $("#err_msg").html("<h3><font color='red'>Highlighted fields are required.</font></h3>");
+              $("#id_ic_incharge").css({"border":"2px red solid"});
+          } else {
+              $("#hidden_process").val("acceptF2");
+              $("#ncrVerifyForm").submit();         
+          }    
+      }   
+  </script>
+    
+</head>
+
+<!--<body>-->
+<body onload="init_screen()">
+
+{% load static %}
+
+<!--
+<div class="jumbotron text-center" style="margin-bottom:0">
+-->
+<div class="sdmiheader text-center" style="margin-bottom:0">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />  
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System ::: </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>　  
+        <li class="active"><a href="#">Verify NCR Detail</a></li>　 
+        {% if isChecker or isSH or isGrpMgr %}
+            <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>　        
+        {% endif %}                  
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li>
+        <li><a href="/ncr/projects_show">Show Project</a></li>　
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>　　
+      </ul>　  
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form 
+    class="form-inline" 
+    action="/ncr/ncr_verify_accept" 
+    method="POST" 
+    id="ncrVerifyForm" 
+    get-latest-update-date-url="{% url 'NCRMgmntSystem:ajax_get_latest_update_date' %}"  
+    novalidate>
+
+{% csrf_token %}
+
+<div class="container">
+<!--
+<div class="container-fluid">
+-->
+  <div id="success_msg" class="form-row"><h4><font color="blue">{{message}}</h4></font></div>
+  <!-- Error messaging -->
+  <div id="err_msg" class="form-row"><h4><font color="red">{{error_message}}</font></h4></div>
+  {% if form.errors %}
+  <div id="errors">
+	<div class="inner">
+	  <font color='red'>
+	  <p>There were some errors in the information you entered. Please correct the following:</p>
+		{{ form.non_field_errors }}
+	  <ul>
+		{% for field in form %}
+		{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+		{% endfor %}
+	  </ul>
+	  </font>
+	</div>
+  </div>
+  <!-- /Error messaging -->
+  {% endif %}
+  
+  <div class="row">
+    <div class="col-sm-9">
+      <button type="button" class="btn btn-primary active save-btn" id="btnReset">
+        <span class="glyphicon glyphicon-refresh"></span> Reset
+      </button>      
+    </div>
+    
+    <div class="col-sm-3">
+    {% if ncrDetailMstr.close_date|date:"Y-m-d" == '' %}
+      {% if ncrDetailMstr.deadline != None %}
+        <h4><p class="text-right">Deadline: {{ncrDetailMstr.deadline|date:'d F o'}}
+        {% if ncrDetailMstr.rev_no > 0 %}
+            &nbsp;r.{{ncrDetailMstr.rev_no}}</p></h4>              
+        {% endif %}
+         </p></h4>  
+      {% endif %}
+    {% else %} 
+      {% if ncrDetailMstr.status == '2' %}
+        <h4><p class="text-right">Date Cancelled: {{ncrDetailMstr.close_date|date:'d F o'}}
+        {% if ncrDetailMstr.rev_no > 0 %}
+            &nbsp;r.{{ncrDetailMstr.rev_no}}</p></h4>              
+        {% endif %}
+        </p></h4>               
+      {% elif ncrDetailMstr.status == '5' %}
+        <h4><p class="text-right">Date Closed: {{ncrDetailMstr.close_date|date:'d F o'}}
+        {% if ncrDetailMstr.rev_no > 0 %}
+            &nbsp;r.{{ncrDetailMstr.rev_no}}</p></h4>              
+        {% endif %}
+        </p></h4>              
+      {% endif %}
+    {% endif %}  
+    </div>             
+  </div>
+  
+  
+  <div class="row" style="background-color:#C0C0C0;">
+    &nbsp;
+    <div class="col-sm-6">
+      <h4><strong>NONCONFORMANCE REPORT AND CORRECTIVE ACTION (Verify)</strong></h4>        
+    </div>
+    <div class="col-sm-6">
+    {% if ncr_no_size == 'S' %}
+      <strong><h2><small>Rec No:</small>{{ncrDetailMstr.ncr_no}}</h1></strong>
+    {%else%}
+      <strong><h4><small>Rec No:</small>{{ncrDetailMstr.ncr_no}}</h4></strong>
+    {%endif%}  
+      <center><h5>YYYY-MM-DD-Section-Project-Serial</h5></center>  
+    </div>
+  </div>
+  
+{% if check_phase != '0' and from_email_id == ncrDetailMstr.nc_conformed_by %}
+  <div class="row" style="background-color:powderblue;">
+{% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa %}
+  <div class="row" style="background-color:powderblue;">
+{%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+{%endif%}
+    <div class="col-sm-12">
+      {{ form.source.label}}&nbsp;{{ form.source.0 }}&nbsp;{{ form.source.1}}&nbsp;{{ form.source.2 }}&nbsp;{{ form.source.3 }}&nbsp;{{ form.source.4}}&nbsp;{{ form.source.5 }}&nbsp;
+      <input type="textbox" class="form-control" name="other_source" value="{{ncrDetailMstr.other_source}}" disabled/>
+    </div>    
+  </div>
+
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        A. Nonconformance detail description</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  {% if check_phase != '0' and from_email_id == ncrDetailMstr.nc_conformed_by and ncrDetailMstr.nc_conformed_date|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+  {%endif%}
+    <div class="col-sm-6">
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.classification.label}}
+         
+         {% if ncrDetailMstr.classification == '1' %}
+             <input type="radio" id="classification_1_read_only" value="1" checked disabled>          
+         {% else %}    
+             <input type="radio" id="classification_1_read_only" value="1" disabled>
+         {% endif %}
+         <label for="classification_1_read_only">Minor</label>  
+         {% if ncrDetailMstr.classification == '2' %}
+             <input type="radio" id="classification_2_read_only" value="2" checked disabled>          
+         {% else %}    
+             <input type="radio" id="classification_2_read_only" value="2" disabled>
+         {% endif %}
+         <label for="classification_2_read_only">Major</label>
+      </div>
+      <div class="row">
+        <textarea id="nc_detail_description_read_only" class="form-control"  rows="7" cols="75" disabled/>
+          {{ncrDetailMstr.nc_detail_description}}
+        </textarea>         
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Discovered by:</strong>       
+      </div> 
+      <div class="row">
+        Staff:&nbsp;<input type="textbox" class="form-control" id="nc_discovered_by_read_only" value="{{ncrDetailMstr.nc_discovered_by}}" size="40" disabled/>
+      </div> 
+      <div class="row">
+        <strong>Conformed by: </strong>                     
+      </div>
+      <div class="row">
+        SH:&nbsp;<input type="textbox" class="form-control" id="nc_conformed_by_read_only" value="{{nc_conformed_by}}" disabled/>
+        &nbsp;Date:&nbsp;<input type="textbox" class="form-control" id="nc_conformed_date_read_only" size="10" value="{{ncrDetailMstr.nc_conformed_date|date:"Y-m-d"}}" disabled/> 
+        {% if ncrDetailMstr.nc_conforme_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.nc_conforme_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}  
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.nc_conformed_by and ncrDetailMstr.ic_create_date|date:"Y-m-d" == '' %}
+          {% if ncrDetailMstr.nc_conforme_status != '1' %}
+            <input type="button" class="btn btn-success" name="acceptA" value="Accept" onclick="javascript:validateAccept('acceptA1');">
+          {% else %} 
+            <input type="button" class="btn btn-success" name="acceptA" value="Accept" disabled>     
+          {% endif %} 
+          {% if ncrDetailMstr.nc_conforme_status != '0' %}
+            <input type="button" class="btn btn-danger" name="denyA1" value="Deny" onclick="javascript:validateDeny('denyA1');"> 
+          {% else %} 
+            <button type="button" id="denyA1" class="btn btn-danger" name="denyA1" value="denyA1" disabled>Deny</button>
+          {% endif %}                      
+        {%endif%}       
+        
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        B. Immediate Correction</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+{% if check_phase != '0' and from_email_id == ncrDetailMstr.ic_approve_by and ncrDetailMstr.ic_approve_date|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+{% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+{%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+{%endif%}
+  
+    <div class="col-sm-6">
+      <div class="row">
+        <textarea name="ic_description" id="ic_description" class="form-control"  rows="4" cols="75" disabled/>
+          {{ncrDetailMstr.ic_description}}
+        </textarea> 
+      </div>  
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.nc_conformed_by and ncrDetailMstr.ic_create_date|date:"Y-m-d" == '' %}
+          {{form.ic_incharge}}
+        {% else %}   
+          <input type="textbox" name="ic_incharge"  id="ic_incharge" class="form-control" value="{{ic_incharge}}" disabled/>
+        {% endif %}  
+        Date:<input type="textbox" name="ic_create_date" id="ic_create_date" class="form-control" size="10" value="{{ncrDetailMstr.ic_create_date|date:"Y-m-d"}}" disabled/>
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:<input type="textbox" class="form-control" name="ic_approve_by" value="{{ic_approve_by}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="date" size="10" value="{{ncrDetailMstr.ic_approve_date|date:"Y-m-d"}}" disabled/> 
+        {% if ncrDetailMstr.ic_approve_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.ic_approve_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}  
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.ic_approve_by and ncrDetailMstr.rca_create_date|date:"Y-m-d" == '' %}
+          {% if ncrDetailMstr.ic_approve_status != '1' %}
+            <input type="button" class="btn btn-success" name="acceptB" value="Accept" onclick="javascript:validateAccept('acceptB1');">
+          {% else %}   
+            <input type="button" class="btn btn-success" name="acceptB" value="Accept" disabled>
+          {% endif %} 
+          {% if ncrDetailMstr.ic_approve_status != '0' %}
+            <input type="button" class="btn btn-danger" name="denyB1" value="Deny" onclick="javascript:validateDeny('denyB1');">           
+          {% else %}
+            <button type="button" id="denyB1" class="btn btn-danger" name="denyB1" value="denyB1" disabled>Deny</button>
+          {% endif %}                      
+        {%endif%}                    
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        C. Root Cause Analysis(5 Whys, Fishbone, etc) <a href="https://shigroup-my.sharepoint.com/personal/ba00620467_shi-g_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fba00620467%5Fshi%2Dg%5Fcom%2FDocuments%2F2%2E0%20ISO9001%5F2015v%2F5%2E0%20NCR%20Web%20Application&originalPath=aHR0cHM6Ly9zaGlncm91cC1teS5zaGFyZXBvaW50LmNvbS86ZjovZy9wZXJzb25hbC9iYTAwNjIwNDY3X3NoaS1nX2NvbS9FbGpYLXNsdmVfaEtxTVY4M0xLVHVkZ0IzWV9lZ2hFdWpaaGV5LTl6emFmQ1VRP3J0aW1lPWpuc2JxMjV6MlVn/" target="_blank">[RCA How To]</a></strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  {% if check_phase != '0' and from_email_id == ncrDetailMstr.rca_approve_by and ncrDetailMstr.rca_approve_date|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.ca_approved_by_mgr and ncrDetailMstr.ca_approved_date_by_mgr|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  
+  {%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+  {%endif%}
+    <div class="col-sm-6"> 
+      <div class="row">
+        <textarea name="rca_description" id="rca_description" class="form-control"  rows="10" cols="75" disabled/>
+          {{ncrDetailMstr.rca_description}}
+        </textarea> 
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+         {{form.ca_necessary.label}}&nbsp;{{form.ca_necessary.0}}&nbsp;{{form.ca_necessary.1}}         
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        In-charge:<input type="textbox" class="form-control" name="rca_incharge" id="rca_incharge" value="{{rca_incharge}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="rca_create_date" id="rca_create_date" size="10" value="{{ncrDetailMstr.rca_create_date|date:"Y-m-d"}}" disabled/> 
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:<input type="textbox" class="form-control" name="rca_approve_by" id="rca_approve_by" value="{{rca_approve_by}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="rca_approve_date" id="rca_approve_date" size="10" value="{{ncrDetailMstr.rca_approve_date|date:"Y-m-d"}}" disabled/> 
+        {% if ncrDetailMstr.rca_approve_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.rca_approve_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}  
+
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.rca_approve_by and ncrDetailMstr.ca_approve_by_mgr_status != '1'%}
+          {% if ncrDetailMstr.rca_approve_status != '1' %}
+            <input type="button" class="btn btn-success" name="acceptC" value="Accept" onclick="javascript:validateAccept('acceptC1');">
+          {% else %} 
+            <input type="button" class="btn btn-success" name="acceptC" value="Accept" disabled>
+          {% endif %} 
+          {% if ncrDetailMstr.rca_approve_status != '0' %}
+            <input type="button" class="btn btn-danger" name="denyC1" value="Deny" onclick="javascript:validateDeny('denyC1');"> 
+          {% else %} 
+            <button type="button" id="denyC1" class="btn btn-danger" name="denyC1" value="denyC1" disabled>Deny</button>  
+          {% endif %}                      
+        {%endif%}                       
+      </div>   
+    </div>          
+  </div> 
+
+{% if ncrDetailMstr.ca_necessary != '0' %}
+
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        D. Corrective Action To The Cause</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  {% if check_phase != '0' and from_email_id == ncrDetailMstr.ca_checked_by_sh and ncrDetailMstr.ca_check_date_by_sh|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.ca_approved_by_mgr and ncrDetailMstr.ca_approved_date_by_mgr|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+  {%endif%}
+    <div class="col-sm-6">
+      <div class="row">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Target Date Of Accomplishment: <input type="textbox" class="form-control" name="ca_target_date" id="ca_target_date" size="10" value="{{ncrDetailMstr.ca_target_date|date:"Y-m-d"}}" disabled/>  
+      </div>
+      <div class="row">
+        <textarea name="ca_description" id="ca_description" class="form-control"  rows="4" cols="75" disabled/>
+          {{ncrDetailMstr.ca_description}}
+        </textarea>  
+        <br>       
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Checked by:</strong>
+      </div> 
+      <div class="row">
+        SH:<input type="textbox" class="form-control" name="ca_checked_by_sh" id="ca_checked_by_sh" value="{{ca_checked_by_sh}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="ca_check_date_by_sh" id="ca_check_date_by_sh" size="10" value="{{ncrDetailMstr.ca_check_date_by_sh|date:"Y-m-d"}}" disabled/> 
+        {% if ncrDetailMstr.ca_check_by_sh_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.ca_check_by_sh_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}  
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.ca_checked_by_sh and ncrDetailMstr.ca_approve_by_mgr_status != '1'%}
+          {% if ncrDetailMstr.rca_approve_date|date:"Y-m-d" == '' %}            
+            {% if ncrDetailMstr.ca_check_by_sh_status != '1' %}  
+              <input type="button" class="btn btn-success" name="acceptD1" value="Accept" disabled/>
+              <button type="button" id="denyD" class="btn btn-danger" name="denyD1" value="denyD1" disabled>Deny</button>  
+            {% endif %}               
+          {%else%}
+            {% if ncrDetailMstr.ca_check_by_sh_status != '1' and ncrDetailMstr.rca_approve_status != '0' %} 
+              <input type="button" class="btn btn-success" name="acceptD1" value="Accept" onclick="javascript:validateAccept('acceptD1');"/> 
+            {% else %}
+              <input type="button" class="btn btn-success" name="acceptD1" value="Accept" disabled/> 
+            {% endif %}  
+            {% if ncrDetailMstr.ca_check_by_sh_status != '0' %}    
+              <input type="button" class="btn btn-danger" name="denyD1" value="Deny" onclick="javascript:validateDeny('denyD1');">              
+            {% else %}
+              <button type="button" id="denyD1" class="btn btn-danger" name="denyD1" value="denyD1" disabled>Deny</button>  
+            {% endif %}  
+          {%endif%}          
+        {%endif%} 
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">
+        Grp Mgr:<input type="textbox" class="form-control" name="ca_approved_by_mgr" id="ca_approved_by_mgr" value="{{ca_approved_by_mgr}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="ca_approved_date_by_mgr" id="ca_approved_date_by_mgr" size="10" value="{{ncrDetailMstr.ca_approved_date_by_mgr|date:"Y-m-d"}}" disabled/>         
+        {% if ncrDetailMstr.ca_approve_by_mgr_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.ca_approve_by_mgr_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %} 
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.ca_approved_by_mgr and ncrDetailMstr.ra_check_date_by_staff|date:"Y-m-d" == '' %}
+          {% if ncrDetailMstr.ca_check_date_by_sh|date:"Y-m-d" == '' %}
+            <input type="button" class="btn btn-success" name="acceptD2" value="Accept" disabled/>
+            <button type="button" class="btn btn-danger" name="denyD2" value="denyD2" disabled>Deny</button>
+          {%else%}
+            {% if ncrDetailMstr.ca_approve_by_mgr_status != '1' %}  
+              <input type="button" class="btn btn-success" name="acceptD2" value="Accept" onclick="javascript:validateAccept('acceptC2D2');">
+            {% else %}  
+              <input type="button" class="btn btn-success" name="acceptD2" value="Accept" disabled>
+            {% endif %}  
+            {% if ncrDetailMstr.ca_approve_by_mgr_status != '0' %}   
+              <input type="button" class="btn btn-danger" name="denyC2D2" value="Deny" onclick="javascript:validateDeny('denyC2D2');"> 
+            {% else %}
+              <button type="button" id="denyC2D2" class="btn btn-danger" name="denyC2D2" value="denyC2D2" disabled>Deny</button>  
+            {% endif %}  
+          {%endif%}           
+        {%endif%} 
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        E. Result Of Action</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  {% if check_phase != '0' and from_email_id == ncrDetailMstr.ra_check_by_sh and ncrDetailMstr.ra_check_date_by_sh|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_mgr and ncrDetailMstr.se_check_date_by_mgr|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+  {%endif%}
+    <div class="col-sm-6">
+      <div class="row">
+        <textarea name="ra_description" id="ra_description" class="form-control"  rows="4" cols="75" disabled/>
+          {{ncrDetailMstr.ra_description}}
+        </textarea>        
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.ra_action_effective.label}}&nbsp;{{form.ra_action_effective.0}}&nbsp;{{form.ra_action_effective.1}}
+      </div>
+      <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;{{form.ra_action_effective.2}}&nbsp;         
+         <input type="textbox" class="form-control" name="ra_followup_date" id="ra_followup_date" size="10" value="{{ncrDetailMstr.ra_followup_date|date:"Y-m-d"}}" disabled/>  
+      </div>       
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>By:</strong>
+      </div> 
+      <div class="row">
+        In-Charge:<input type="textbox" class="form-control" name="ra_check_by_staff" id="ra_check_by_staff" value="{{ra_check_by_staff}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="ra_check_date_by_staff" id="ra_check_date_by_staff" size="10" value="{{ncrDetailMstr.ra_check_date_by_staff|date:"Y-m-d"}}" disabled/>                 
+      </div> 
+      <div class="row">
+        <strong>Approved by:</strong>        
+      </div>
+      <div class="row">
+        SH:<input type="textbox" class="form-control" name="ra_check_by_sh" id="ra_check_by_sh" value="{{ra_check_by_sh}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="ra_check_date_by_sh" id="ra_check_date_by_sh" size="10" value="{{ncrDetailMstr.ra_check_date_by_sh|date:"Y-m-d"}}" disabled/>
+        {% if ncrDetailMstr.ra_check_by_sh_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.ra_check_by_sh_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.ra_check_by_sh and ncrDetailMstr.ca_approve_by_mgr_status == '1' and ncrDetailMstr.se_check_date_by_mgr|date:"Y-m-d" == '' %}
+          {% if ncrDetailMstr.ra_check_by_sh_status != '1' %}
+            <input type="button" class="btn btn-success" name="acceptE" value="Accept" onclick="javascript:validateAccept('acceptE1F1');">  
+          {% else %}
+            <input type="button" class="btn btn-success" name="acceptE" value="Accept" disabled>
+          {% endif %} 
+          {% if ncrDetailMstr.ra_check_by_sh_status != '0' %}
+            <input type="button" class="btn btn-danger" name="denyE1F1" value="Deny" onclick="javascript:validateDeny('denyE1F1');"> 
+          {% else %}
+            <button type="button" id="denyE" class="btn btn-danger" name="denyE1F1" value="denyE1F1" disabled>Deny</button>
+          {% endif %} 
+        {%endif%}  
+      </div>   
+    </div>          
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-12">
+      <div class="row form-group">
+        <h5><strong>
+        F. Show Effectiveness</strong></h5>  
+      </div>
+    </div>
+  </div>
+  
+  {% if check_phase != '0' and from_email_id == ncrDetailMstr.ra_check_by_sh and ncrDetailMstr.ra_check_date_by_sh|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_mgr and ncrDetailMstr.se_check_date_by_mgr|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {% elif check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d" == '' %}
+  <div class="row" style="background-color:powderblue;">
+  {%else%}
+  <div class="row" style="background-color:#E5E4E2;">
+  {%endif%}
+    <div class="col-sm-6">
+      <div class="row">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         {{form.se_ro_updated.label}}&nbsp;{{form.se_ro_updated.1}}&nbsp;{{form.se_ro_updated.0}}
+      </div>
+      <div class="row">
+        <textarea name="se_description" id="se_description" class="form-control"  rows="4" cols="75" disabled/>
+          {{ncrDetailMstr.se_description}}
+        </textarea> 
+      </div>        
+    </div>  
+    <div class="col-sm-6">
+      <div class="row">
+        <strong>Approved by:</strong>
+      </div> 
+      <div class="row">
+      
+        Grp Mgr:<input type="textbox" class="form-control" name="se_check_by_mgr" id="se_check_by_mgr" value="{{se_check_by_mgr}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="se_check_date_by_mgr" id="se_check_date_by_mgr" size="10" value="{{ncrDetailMstr.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/> 
+        {% if ncrDetailMstr.se_check_by_mgr_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.se_check_by_mgr_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}      
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_mgr %}
+          {% if ncrDetailMstr.ra_check_date_by_sh|date:"Y-m-d" == '' %}
+            <input type="button" class="btn btn-success" name="acceptE2F2" value="Accept" disabled/>
+            <button type="button" class="btn btn-danger" name="acceptE2F2" value="denyD2" disabled>Deny</button>
+          {%else%}                
+            {% if ncrDetailMstr.se_check_by_mgr_status != '1' %}
+              <input type="button" class="btn btn-success" name="acceptE2F2" value="Accept" onclick="javascript:validateAccept('acceptE2F2');">
+            {% else %}      
+              <input type="button" class="btn btn-success" name="acceptE2F2" value="Accept" disabled>
+            {% endif %}      
+            {% if ncrDetailMstr.se_check_by_mgr_status != '0' %}
+              <input type="button" class="btn btn-danger" name="denyE2F2" value="Deny" onclick="javascript:validateDeny('denyE2F2');"> 
+            {% else %}      
+              <button type="button" id="denyE2F2" class="btn btn-danger" name="denyE2F2" value="denyE2F2" disabled>Deny</button>
+            {% endif %}               
+          {%endif%}           
+        {%endif%}             
+      </div> 
+      <div class="row">
+        <strong>Aprroved by:</strong>        
+      </div>
+      <div class="row">
+      
+        QA Mgr:<input type="textbox" class="form-control" name="se_check_by_qa" id="se_check_by_qa" value="{{se_check_by_qa}}" disabled/>&nbsp;Date:<input type="textbox" class="form-control" name="se_check_date_by_qa" id="se_check_date_by_qa" size="10" value="{{ncrDetailMstr.se_check_date_by_qa|date:"Y-m-d"}}" disabled/>                 
+        {% if ncrDetailMstr.se_check_by_qa_status == '1' %}
+          <span class="glyphicon glyphicon-ok"></span>          
+        {% elif ncrDetailMstr.se_check_by_qa_status == '0' %}
+          <span class="glyphicon glyphicon-remove"></span>    
+        {% endif %}
+        
+        {% if check_phase != '0' and from_email_id == ncrDetailMstr.se_check_by_qa and ncrDetailMstr.close_date|date:"Y-m-d" == '' %}        
+          {% if ncrDetailMstr.se_check_by_mgr_status != '1' %}
+            <input type="button" class="btn btn-success" name="acceptE3F3" value="Accept" disabled/>
+            <button type="button" class="btn btn-danger" name="denyE3F3" value="denyD2" disabled>Deny</button>
+          {%else%} 
+        
+            {% if data.se_check_by_qa_status != '1' %}
+              <input type="button" class="btn btn-success" name="acceptE3F3" value="Close NCR" onclick="javascript:validateAccept('acceptE3F3');">
+            {% else %}
+              <input type="button" class="btn btn-success" name="acceptE3F3" value="Close NCR" disabled>
+            {% endif %}
+            {% if data.se_check_by_qa_status != '0' %}
+              <input type="button" class="btn btn-danger" name="denyE3F3" value="Deny" onclick="javascript:validateDeny('denyE3F3');"> 
+            {% else %}
+              <button type="button" id="denyE3F3" class="btn btn-danger" name="denyE3F3" value="denyE3F3" disabled>Deny</button>
+            {% endif %}                    
+          {%endif%}
+        {%endif%}  
+      </div>   
+    </div>          
+  </div>
+ 
+{%endif%}
+  
+  <br>
+    
+</div>
+<!--2021.04.30 MODAL ADD START -->
+<!--modal-->
+<div class="modal fade" role="dialog" id="denyReasonA1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br><small>A. Nonconformance detail description</small></h3></center>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reasonA1" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonA1" id="reasonA1" class="form-control"  rows="10" cols="75" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current1">0</span>
+                        <span id="maximum1">/ 1000</span>
+                    </div>  
+               </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnA1" data-dismiss="modal">Cancel</button>                
+				<button type="submit" class="btn btn-success" name="process" id="mDenyA1" value="denyA1">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="denyReasonB1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br><small>B. Immediate Correction</small></h3></center>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reasonB1" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonB1" id="reasonB1" class="form-control"  rows="10" cols="75" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current2">0</span>
+                        <span id="maximum2">/ 1000</span>
+                    </div>  
+               </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnB1" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyB1" value="denyB1">Save</button>
+            </div>            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="denyReasonC1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br><small>C. Root Cause Analysis(5 Whys, Fishbone, etc)
+                {% if ncrDetailMstr.ca_description != '' and ncrDetailMstr.ca_description != None  %}
+                  <br>D. Corrective Action to the cause
+                {% endif %} 
+        </small></h3></center>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reasonC" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonC1" id="reasonC1" class="form-control"  rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current3">0</span>
+                        <span id="maximum3">/ 1000</span>
+                    </div>  
+               </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnC1" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyC1" value="denyC1">Save</button>
+            </div>        
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="denyReasonD1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br><small>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause                   
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reasonC" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonD1" id="reasonD1" class="form-control" rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current4">0</span>
+                        <span id="maximum4">/ 1000</span>
+                    </div>  
+               </div>
+            </div>            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnD1" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyD1" value="denyD1">Save</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="denyReasonC2D2">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br></h3></center>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                   C. Root Cause Analysis(5 Whys, Fishbone, etc)
+                   {% if ncrDetailMstr.ca_description != '' and ncrDetailMstr.ca_description != None %}
+                     <br>D. Corrective Action to the cause
+                   {% endif %} 
+                   </div>
+               <div class="form-group">
+                    <label for="reasonC2" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonC2D2" id="reasonC2D2" class="form-control" rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current5">0</span>
+                        <span id="maximum5">/ 1000</span>
+                    </div>  
+               </div>
+            </div>           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnC2D2" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyC2D2" value="denyC2D2">Save</button>
+            </div>            
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="denyReasonE1F1">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br></h3></center>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                   C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>
+                   D. Corrective Action to the cause<br>
+                   E. Result of Action
+                   {% if ncrDetailMstr.se_description != '' and ncrDetailMstr.se_description != None %}
+                     <br>F. Show Effectiveness
+                   {% endif %} 
+               </div>
+               <div class="form-group">
+                    <label for="reasonE1" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonE1" id="reasonE1F1" class="form-control" rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current6">0</span>
+                        <span id="maximum6">/ 1000</span>
+                    </div>  
+               </div>
+            </div>           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnE1F1" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyE1F1" value="denyE1F1">Save</button>
+            </div>            
+            
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="denyReasonE2F2">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br></h3></center>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                   C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>
+                   D. Corrective Action to the cause<br>
+                   E. Result of Action
+                   {% if ncrDetailMstr.se_description != '' and ncrDetailMstr.se_description != None %}
+                     <br>F. Show Effectiveness
+                   {% endif %} 
+               </div>
+               <div class="form-group">
+                    <label for="reasonE2" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonE2F2" id="reasonE2F2" class="form-control" rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current7">0</span>
+                        <span id="maximum7">/ 1000</span>
+                    </div>  
+               </div>
+            </div>   
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnE2F2" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyE2F2" value="denyE2F2">Save</button>
+            </div>                        
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" id="denyReasonE3F3">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center><h3 class="modal-title">Write the Deny reason<br></h3></center>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                   C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>
+                   D. Corrective Action to the cause<br>
+                   E. Result of Action
+                   {% if ncrDetailMstr.se_description != '' and ncrDetailMstr.se_description != None %}
+                     <br>F. Show Effectiveness
+                   {% endif %}  
+               </div>
+               <div class="form-group">
+                    <label for="reasonE3" class="col-form-label">Reason/s:</label>
+                    <textarea name="reasonE3F3" id="reasonE3F3" class="form-control" rows="4" cols="65" placeholder="-- Please input details for you deny reason here... --" maxlength="1000"/></textarea>
+                    <div id="the-count">
+                        <span id="current8">0</span>
+                        <span id="maximum8">/ 1000</span>
+                    </div>  
+               </div>
+            </div>  
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" id="mCancelBtnE3F3" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" name="process" id="mDenyE3F3" value="denyE3F3">Save</button>
+            </div>            
+        </div>
+    </div>
+</div>
+
+    <input type="hidden" id="ncrNo" name="ncrNo" value="{{ ncrDetailMstr.ncr_no }}"> 
+    <input type="hidden" id="check_phase" name="check_phase" value="{{ check_phase }}"> 
+    <input type="hidden" id="from_email_id" name="from_email_id" value="{{ from_email_id }}"> 
+
+    {{form.hidden_process}}
+    {{form.hidden_update_date}}
+    
+</form>
+
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    
+    $(function () {    
+        $("#mDenyA1").attr("disabled", "disabled");
+        $("#mDenyB1").attr("disabled", "disabled");
+        $("#mDenyC1").attr("disabled", "disabled");
+        $("#mDenyD1").attr("disabled", "disabled");
+        $("#mDenyC2D2").attr("disabled", "disabled");
+        $("#mDenyE1F1").attr("disabled", "disabled");
+        $("#mDenyE2F2").attr("disabled", "disabled");
+        $("#mDenyE3F3").attr("disabled", "disabled");
+    
+        $("#reasonA1").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyA1");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonB1").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyB1");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonC1").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyC1");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonD1").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyD1");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonC2D2").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyC2D2");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonE1F1").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyE1F1");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonE2F2").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyE2F2");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+        
+        $("#reasonE3F3").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#mDenyE3F3");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the Button when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the Button when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+    });
+    
+    $("#btnReset").click(function () {    
+        $("#ncrVerifyForm").attr("action", "{% url 'NCRMgmntSystem:ncr_verify_view' ncrDetailMstr.ncr_no 'check_phase' 'None' 'None' from_email_id %}");  
+        $("#ncrVerifyForm").submit(); 
+    });
+    
+    function init_screen(){        
+        if( $('#ic_create_date').val() != ''){
+            $("#id_ic_incharge").attr('readonly','readonly');        
+        } else {
+            $("#id_ic_incharge").removeAttr('readonly');    
+        }              
+    } 
+ 
+<!-- 2021.05.20 modal start -->
+    <!-- denyA1 -->
+    $("#denyA1").click(function () {
+        document.getElementById("mDenyA1").disabled = true;
+        document.getElementById("reasonA1").addEventListener("keyup", enableDenyA1);
+    });
+    function enableDenyA1() {
+        document.getElementById("mDenyA1").disabled = false;
+    }
+    <!-- denyB1 -->
+    $("#denyB1").click(function () {
+        document.getElementById("mDenyB1").disabled = true;
+        document.getElementById("reasonB1").addEventListener("keyup", enableDenyB1);
+    });
+    function enableDenyB1() {
+        document.getElementById("mDenyB1").disabled = false;
+    }
+    <!-- denyC1 -->
+    $("#denyC1").click(function () {
+        document.getElementById("mDenyC1").disabled = true;
+        document.getElementById("reasonC1").addEventListener("keyup", enableDenyC1);
+    });
+    function enableDenyC1() {
+        document.getElementById("mDenyC1").disabled = false;
+    }
+    <!-- denyD -->
+    $("#denyD").click(function () {
+        document.getElementById("mDenyD1").disabled = true;
+        document.getElementById("reasonD1").addEventListener("keyup", enableDenyD);
+    });
+    function enableDenyD() {
+        document.getElementById("mDenyD1").disabled = false;
+    }
+    <!-- denyD1 -->
+    $("#denyD1").click(function () {
+        document.getElementById("mDenyD1").disabled = true;
+        document.getElementById("reasonD1").addEventListener("keyup", enableDenyD);
+    });
+    function enableDenyD() {
+        document.getElementById("mDenyD1").disabled = false;
+    }
+    <!-- denyC2D2 -->
+    $("#denyC2D2").click(function () {
+        document.getElementById("mDenyC2D2").disabled = true;
+        document.getElementById("reasonC2").addEventListener("keyup", enableDenyC2D2);
+        document.getElementById("reasonD2").addEventListener("keyup", enableDenyC2D2);
+    });
+    function enableDenyC2D2() {
+        document.getElementById("mDenyC2D2").disabled = false;
+    }
+    <!-- denyE -->
+    $("#denyE").click(function () {
+        document.getElementById("mDenyE1F1").disabled = true;
+        document.getElementById("reasonE1").addEventListener("keyup", enableDenyE1F1);
+        document.getElementById("reasonF1").addEventListener("keyup", enableDenyE1F1);
+    });
+    function enableDenyE1F1() {
+        document.getElementById("mDenyE1F1").disabled = false;
+    }    
+    <!-- denE2F2 -->
+    $("#denyE2F2").click(function () {
+        document.getElementById("mDenyE2F2").disabled = true;
+        document.getElementById("reasonE2").addEventListener("keyup", enableDenyE2F2);
+        document.getElementById("reasonF2").addEventListener("keyup", enableDenyE2F2);
+    });
+    function enableDenyE2F2() {
+        document.getElementById("mDenyE2F2").disabled = false;
+    }      
+    <!-- denyE3F3 -->
+    $("#denyE3F3").click(function () {
+        document.getElementById("mDenyE3F3").disabled = true;
+        document.getElementById("reasonE3").addEventListener("keyup", enableDenyE2F3);
+        document.getElementById("reasonF3").addEventListener("keyup", enableDenyE2F3);
+    });
+    function enableDenyE2F3() {
+        document.getElementById("mDenyE3F3").disabled = false;
+    }  
+        
+    <!-- clear when CANCEL button click -->
+    $("#mCancelBtnA1").click(function () {
+        $("#mDenyA1").attr("disabled", "disabled");
+        document.getElementById("reasonA1").value = ""
+    });
+    $("#mCancelBtnB1").click(function () {
+        $("#mDenyB1").attr("disabled", "disabled");
+        document.getElementById("reasonB1").value = ""
+    });
+    $("#mCancelBtnC1").click(function () {
+        $("#mDenyC1").attr("disabled", "disabled");
+        document.getElementById("reasonC1").value = ""
+    });
+    $("#mCancelBtnD1").click(function () {
+        $("#mDenyD1").attr("disabled", "disabled"); 
+        document.getElementById("reasonD1").value = ""
+    });
+    $("#mCancelBtnC2D2").click(function () {
+        $("#mDenyC2D2").attr("disabled", "disabled");
+        document.getElementById("reasonC2").value = ""
+        document.getElementById("reasonD2").value = ""
+    });
+    $("#mCancelBtnE1F1").click(function () {
+        $("#mDenyE1F1").attr("disabled", "disabled");
+        document.getElementById("reasonE1").value = ""
+        document.getElementById("reasonF1").value = ""
+    });
+    $("#mCancelBtnE2F2").click(function () {
+        $("#mDenyE2F2").attr("disabled", "disabled");
+        document.getElementById("reasonE2").value = ""
+        document.getElementById("reasonF2").value = ""
+    });
+    $("#mCancelBtnE3F3").click(function () {
+        $("#mDenyE3F3").attr("disabled", "disabled");
+        document.getElementById("reasonE3").value = ""
+        document.getElementById("reasonF3").value = ""
+    });     
+<!-- 2021.05.20 modal end -->    
+
+
+
+$('textarea').keyup(function() {
+    
+  var characterCount = $(this).val().length,
+      current = $('#current'),
+      maximum = $('#maximum'),
+      theCount = $('#the-count');
+    
+  current.text(characterCount);
+ 
+  
+  /*This isn't entirely necessary, just playin around*/
+  if (characterCount < 70) {
+    current.css('color', '#666');
+  }
+  if (characterCount > 70 && characterCount < 90) {
+    current.css('color', '#6d5555');
+  }
+  if (characterCount > 90 && characterCount < 100) {
+    current.css('color', '#793535');
+  }
+  if (characterCount > 100 && characterCount < 120) {
+    current.css('color', '#841c1c');
+  }
+  if (characterCount > 120 && characterCount < 139) {
+    current.css('color', '#8f0001');
+  }
+  
+  if (characterCount >= 140) {
+    maximum.css('color', '#8f0001');
+    current.css('color', '#8f0001');
+    theCount.css('font-weight','bold');
+  } else {
+    maximum.css('color','#666');
+    theCount.css('font-weight','normal');
+  }
+  
+      
+});
+
+   
+</script>
+
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <title>NCOA03: NCR Add Project</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" /> 
+
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+  <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"-->
+       <!-- integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">-->
+  <link rel="stylesheet" href="{% static 'css/use.fontawesome.com_releases_v5.8.2_css_all.css' %}"> 
+
+
+  <link rel="stylesheet" href="{% static 'css/pagination_blue.css' %}">
+
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="{% static 'js/jquery-3.5.1.js' %}"> </script>
+
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+  <script src="{% static 'js/bootstrap.min.js' %}"> </script>
+  <style>
+    .fakeimg {
+      height: 200px;
+      background: #aaa;
+    }
+  </style>
+
+  <style type="text/css">
+    .custom-radio-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .error {
+      border: 2px red solid;
+    }
+
+    .error input, .error select {
+      border: 2px red solid;
+    }
+
+    .radioErr {
+        height: 18px;
+        border-radius: 0px;
+        top: -2px;
+        left: -1px;
+        background-color: red;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 2px solid white;
+    }
+
+    .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+   
+    .sdmifooter {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+
+  </style>
+</head>
+
+<body>
+
+<div class="sdmiheader text-center" style="margin-bottom:0">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />  
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">NCR Management System ::: </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>　       
+        {% if isChecker or isSH or isGrpMgr %}
+            <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>　        
+        {% endif %}                  
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li>                
+        <li class="active"><a href="#">Add Project</a></li>
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>　　         
+      </ul>　  
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>  
+        <li><a href="/ncr/logout">Log-out</a></li>　      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form action="{% url 'NCRMgmntSystem:project_add' %}" method="POST" id="projectAddForm" >
+
+{% csrf_token %}
+  
+<div class="container">
+    <!-- Start modifying for improvements (Added id for div) Edric 2024/02/21-->
+  <h4><font color="blue"><div class="form-row" id="success_message">{{success_message}}</div></h4></font>
+  <!-- Error messaging -->
+  
+  
+  <h4><font color="red"><div class="form-row" id="err_msg">{%autoescape off%}{{error_message}}{%endautoescape%}</div></font></h4>
+  {% if form.errors %}
+  <div id="errors">
+	<div class="inner">
+	  <h4><font color='red'>
+	  <p>There were some errors in the information you entered. Please correct the following:</p>
+		{{ form.non_field_errors }}
+	  <ul>
+		{% for field in form %}
+		{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+		{% endfor %}
+	  </ul>
+	  </h4></font>
+	</div>
+  </div>
+  <!-- /Error messaging -->
+  {% endif %}
+  
+  <div class="row">
+    <div class="col-sm-10">
+    
+    <!-- Modified for imrpovements Edric Marinas 2024/02/21 (I  changed input type from submit to button)
+    <input type="submit" class="btn btn-primary active" name="add" id="add" value="Add" > 
+    
+    -->
+    
+    
+    
+    
+    <!-- Start adding for additional request  Edric Marinas 2024/04/15-->
+      <input type="button" class="btn btn-primary active" name="add" id="modalAdd" value="Add" > 
+      
+      <div class="modal fade" role="dialog" id="modal_add">
+          <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <center><h3 class="modal-title">Do you want to submit?</h3></center>
+                  </div>
+                  <div class="modal-body">
+                      <div class="form-group">
+                      
+                          <label for="reason" class="col-form-label"></label><br>
+                          If you click [<b>SUBMIT</b>] button, your inputs will be saved in database and it will be added in your section's project
+                          
+
+                     </div>
+                  </div>            
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" id="mCancelBtn" data-dismiss="modal">Cancel</button>
+                      
+                      
+          			<input type="button" class="btn btn-success" name="add" id="add" value="SUBMIT" >
+      						
+                  </div>            
+              </div>
+          </div>
+      </div>
+      <!-- End adding for additional request  Edric Marinas 2024/04/15-->
+      
+       
+    
+    </div>
+    <div class="col-sm-2">
+      <p class="text-right"><a href="/ncr/projects_show">Show Project</a></p>     
+    </div> 
+  </div>
+  
+  <div class="row form-inline" style="background-color:powderblue;">
+    <div class="col-sm-6">
+      
+      <div class="row">
+          {% if isAdmin %}
+              <label for="dept">{{form.dept.label}}</label>&nbsp;&nbsp;{{form.dept}}
+          {% else %}
+              <label for="dept">{{form.dept.label}}</label>&nbsp;&nbsp;    
+              <input type="textbox" class="form-control" name="dept_name" id="id_dept" value="{{dept_name}}" disabled/>
+              <input type="hidden" class="form-control" name="dept" value="{{dept_id}}"/>              
+          {% endif %}
+      </div>
+      
+      <div class="row">
+        <label for="code">{{form.code.label}}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.code}}
+      </div>
+      <div class="row">
+        <label for="name">{{form.name.label}}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.name}}    
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="row">
+        <label for="archive_location">{{form.archive_location.label}}</label>&nbsp;&nbsp;{{form.archive_location}}  
+      </div>      
+    </div>
+  </div>  
+  
+  <br>
+
+</div>  
+ 
+</form>
+
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+
+</body>
+</html>
+
+
+<!--Start Adding for improvements Edric 2024/02/21-->
+<script>
+    $(document).ready(function(){
+        let id_dept = document.getElementById('id_dept');
+        let code = document.getElementById('code'); 
+        let name = document.getElementById('name');
+        let button = document.getElementById('mCancelBtn');
+        const containsWhitespace = str => /\s/.test(str);
+        err_msg = "";
+        var error;
+        
+        
+        
+        /*<!--
+        $(".form-control").change(function(){
+            codeVal = code.value;
+
+
+                        
+            if (name.value != "" && code.value != "" && id_dept != "-------------" ){
+                
+                if(containsWhitespace(code.value)){
+                   error = true;
+                   err_msg = "Code: must not contain blanks or spaces<br>";
+                }
+                else{
+                    error = false;
+                }   
+
+            }
+            
+            if(error == false){
+                $("#add").removeAttr("type").attr("type","submit");
+            }
+            else if(error == true){
+                $("#add").removeAttr("type").attr("type","button");
+                
+            }
+        }); 
+        -->*/
+
+        $("#modalAdd").click(function(){
+            $("#modal_add").modal("show");
+        });
+
+        $('#add').click(function(){
+            error = false;
+            button.click();
+
+            if(name.value === ""){
+                $("#name").css('border-color', 'red');  
+                error = true;
+                err_msg = "Highlighted fields are required." ;
+            }
+            else{
+                $("#name").css('border-color', 'lightgray');
+            }
+
+            if(code.value === ""){
+                $("#code").css('border-color', 'red');
+                error = true;
+                err_msg = "Highlighted fields are required." ;
+            }
+            else{
+                $("#code").css('border-color', 'lightgray');
+            }
+
+            if(id_dept.value == "-------------" || id_dept.value == ""){    
+                $("#id_dept").css('border-color', 'red');
+                error = true;
+                err_msg = "Highlighted fields are required." ;
+            }
+            else{
+                $("#id_dept").css('border-color', 'lightgray');
+            }
+
+            $("#code").keyup(function(){
+                $("#code").css('border-color', '#ccc');
+
+            });
+            $("#name").keyup(function(){
+                $("#name").css('border-color', '#ccc');
+
+            });
+
+            if( error == true){
+                $("#add").removeAttr("type").attr("type","button");
+                $("#success_message").html("");
+                if (err_msg === null || err_msg === ""){
+                    console.log("Error");
+
+                }
+                else{
+
+                    $("#err_msg").html(err_msg);
+                }
+
+            }
+            else if (error == false){
+                $("#add").removeAttr("type").attr("type","submit");
+            }
+
+        });
+
+
+    });
+</script>
+<!--End Adding for improvements Edric 2024/02/21-->

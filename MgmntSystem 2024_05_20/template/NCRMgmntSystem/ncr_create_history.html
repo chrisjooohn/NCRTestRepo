@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <title>NCOA01:NCR Create History</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+
+
+  
+  {% load static %}
+
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7/dist/css/bootstrap.min.css' %}">
+
+
+
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="{% static 'js/jquery-1.8.3.js' %}"> </script>
+
+
+  <!--<script src="{% static 'js/bootstrap.js' %}"> </script>-->
+
+
+
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker3.min.css"> -->
+  <!--<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js"></script>  -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+  <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+
+    <style>
+       .sdmiheader {padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#1F45FC}
+       .sdmifooter {border-top:1px solid rgba(0,0,0,0.2);width:100%;bottom:0;position:fixed;padding-top:10px;padding-bottom:10px;margin-bottom:10px;color:inherit;background-color:#eee}
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+<div class="sdmiheader text-center" style="margin-bottom:0;">
+  <img src="{% static 'NCRMgmntSystem/images/sdmi-horizontal.gif' %}" alt="sdmi" title="sdmi" />
+</div>
+
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      {%if logged%}
+          <a class="navbar-brand" href="#">NCR Management System ::: </a>
+      {%else%}
+          <a class="navbar-brand" href="#">For Viewing Only ::: </a>
+      {%endif%}
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+      {%if logged%}
+
+        {%if pageType == 'create' %}
+            <li><a href="/ncr/ncr_create_view_upd/{{data.ncr_no}}/1"  >Edit NCR Detail</a></li>
+        {%endif%}
+         <li><a href="/ncr/ncr_create_view_ins">Create NCR Detail</a></li>
+        {% if isChecker or isSH or isGrpMgr %}
+
+            {%if pageType == 'verify'%}
+                <li><a href="/ncr/ncr_verify_view/{{data.ncr_no}}/1/None/None/{{logged_user_chapa_no}}" >Verify NCR Detail</a></li>
+            {%endif%}
+                <li><a href="/ncr/ncr_verify_list_view">Show NCR For Approval</a></li>
+        {% endif %}
+        <li><a href="/ncr/ncr_search_view_init">Search NCR</a></li>
+        <li><a href="/ncr/projects_show">Show Project</a></li>　
+        <li><a href="/ncr/employee_password_change_view/{{logged_user_chapa_no}}">Change Password</a></li>
+        <li class="active">
+        {%if data.ncr_no != None %}
+
+            {% if max_rev > 0 %}
+            <li class="active">
+                <a href="#" >NCR History</a>
+            </li>
+            {%else%}
+            <li class="active">
+                <a href="#" >NCR View Only</a>
+            </li>
+            {%endif%}
+        {%endif%}
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> {{logged_username}}</a></li>
+        <li><a href="/ncr/logout">Log-out</a></li>
+
+        {%endif%}
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br><br><br><br><br><br><br><br><br>
+<form class="form-inline"
+    action="{% url 'NCRMgmntSystem:ncr_create' %}"
+    method="POST"
+    id="ncrCreateForm"
+    data-projects-url="{% url 'NCRMgmntSystem:ajax_load_projects' %}"
+    data-checkers-url="{% url 'NCRMgmntSystem:ajax_load_checkers' %}"
+    data-members-url="{% url 'NCRMgmntSystem:ajax_load_members' %}"
+    get-latest-update-date-url="{% url 'NCRMgmntSystem:ajax_get_latest_update_date' %}"
+    novalidate>
+
+<!-- Modal HTML -->
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<div id="modal-body1"> <p>
+				</p></div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="btnContinueSave" name="continueSave" value="continueSave">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="confirm_4" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p> If you click [<b>CONTINUE</b>] button, your inputs will be not be saved in database and<br>
+				   information displayed on screen will be reset to database's current information <br>
+				   for this NCR.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-success" id="btnContinueReset" name="continueReset" value="continue
+				">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>  
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>						
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p> Do you want to save you modification and notify checkers?
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="confirm_3" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p> Do you really want to reset the screen content?
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="confirm_1" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, inputs in "F. Show Effectiveness" is necessary.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be only saved in database, but no email <br>
+				   notification will be send to checker/s.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="confirm_2" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, it is necessary that your Risk and Oppurtunity is updated.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be saved in database and email <br>
+				   notification will be send to checker/s, but it is possible that it will be rejected by QA<br>
+				   or be pending for NCR closing until you update your Risk and Oppurtunity.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Start Adding Edric Marinas 2024/04/19 -->
+<div id="confirm_2_saveOnly" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header flex-column">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>
+				<h4 class="modal-title w-100">Do you want to continue?</h4>
+			</div>
+			<div class="modal-body">
+				<p>    For major NCRs, it is necessary that your Risk and Oppurtunity is updated.<br>
+				   If you click [<b>CONTINUE</b>] button, your changes will be saved in database and no email <br>
+				   notification will be send to checker/s, but it is possible that it will be rejected by QA<br>
+				   or be pending for NCR closing until you update your Risk and Oppurtunity.
+				</p>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-success" id="save" name="save" value="Save">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Adding Edric Marinas 2024/04/19 -->
+
+<div class="modal fade" id="modalForA" tabindex="-1" role="dialog" aria-labelledby="modalForA1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b>A. Nonconformance detail description</h5>
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonA}}</pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalForB" tabindex="-1" role="dialog" aria-labelledby="modalForB1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b>B. Immediate Correction</h5>
+      </div>
+      <div class="modal-body">
+        {{deny_reasonB}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalForC" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)
+          {% if data.ca_description != '' and data.ca_description != None %}
+            <br>D. Corrective Action to the cause
+          {% endif %}
+        </h5>
+      </div>
+      <div class="modal-body">
+        {{deny_reasonC}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalForD" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause</h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonD}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+      </div>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" id="modalForE" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause<br>E. Result of Action
+        {% if data.se_description != '' and data.se_description != None %}
+          <br>F. Show Effectiveness
+        {% endif %}        
+        </h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonE}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+        
+      </div>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" id="modalForF" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><b>DENY REASON INFO: </b><br>C. Root Cause Analysis(5 Whys, Fishbone, etc)<br>D. Corrective Action to the cause<br>E. Result of Action<br>F. Show Effectiveness</h5>        
+      </div>
+      <div class="modal-body">
+        <pre>{{deny_reasonF}}</pre>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>    
+        
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+    
+{% csrf_token %}
+      
+    <div class="container">
+        
+     
+      <div class="row">
+        <div class="col-sm-9">
+
+            {% for x in iterator %}
+                {%if data.rev_no == x %}
+                    <button type="button" id="rev" class="btn btn-primary active save-btn" disabled>{{x}}</button>
+                {%else%}
+                    <a href="/ncr/ncr_create_view_history/{{data.ncr_no}}/{{x}}/{{pageType}}"  id="" class="btn btn-primary active save-btn">{{x}}</a>
+
+                {%endif%}
+            {% endfor %}          
+            {%if data.rev_no == max_rev%}
+                <a href="/ncr/ncr_create_view_history/{{data.ncr_no}}/{{max_rev}}/{{pageType}}"  id="" class="btn btn-primary active save-btn" disabled>{{max_rev}}</a>
+            {%else%}
+                <a href="/ncr/ncr_create_view_history/{{data.ncr_no}}/{{max_rev}}/{{pageType}}"  id="" class="btn btn-primary active save-btn">{{max_rev}}</a>
+            {%endif%}
+            {%if pageType == 'create' %}
+                <a href="/ncr/ncr_create_view_upd/{{data.ncr_no}}/1"  id="" class="btn btn-primary active save-btn">Return</a>
+            {%elif pageType == 'verify'%}
+                <a href="/ncr/ncr_verify_view/{{data.ncr_no}}/1/None/None/{{logged_user_chapa_no}}"  id="" class="btn btn-primary active save-btn">Return</a>
+            {%elif pageType == 'projects_show' %}
+                <a href="/ncr/projects_show"  id="" class="btn btn-primary active save-btn">Return</a>
+            {%endif%}
+          {% if deny_reasonA != '' %}
+              <button id="modalForA1" type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+          {% endif %}
+          {% if deny_reasonB != '' %}
+            <a id="#modalForB1" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForB">
+              <button type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+              </a>          
+          {% endif %}
+          
+          {% if deny_reasonC != '' %}
+            <a id="#modalForC1" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForC">
+              <button type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+              </a>   
+          {% endif %}   
+        
+          {% if deny_reasonD != '' %}
+            <a id="#modalForD1" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForD">
+              <button type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+              </a>          
+          {% endif %}
+          {% if deny_reasonE != '' %}
+            <a id="#modalForE1" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForE">
+              <button type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+              </a>          
+          {% endif %}
+          {% if deny_reasonF != '' %}
+            <a id="#modalForF1" data-toggle="modal" class="MainNavText" id="MainNavHelp" href="#modalForF">
+              <button type="button" class="btn btn-primary active save-btn">
+                <span class="glyphicon glyphicon-search"></span> View Deny Reason
+              </button>
+              </a>          
+          {% endif %}
+        </div>
+        <div class="col-sm-3">
+
+        <p><h4>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r.{{data.rev_no}}
+        </p></h4>              
+
+        </div>
+     
+      </div>
+
+    <div class="row" id="forReadOnlyNcr" style="background-color:#C0C0C0;">
+      &nbsp;
+      <div class="col-sm-5">
+        <h3><strong>NONCONFORMANCE REPORT<br>&nbsp;&nbsp;&nbsp;&nbsp;AND CORRECTIVE ACTION(Edit)</strong></h3>        
+      </div>
+      <div class="col-sm-7 date">
+      {% if ncr_no_size == 'S' %}
+        <strong><h2><small>Rec No:</small>{{data.ncr_no}}</h1></strong>
+      {%else%}
+        <strong><h4><small>Rec No:</small>{{data.ncr_no}}</h4></strong>
+      {%endif%}  
+        <center><h5>YYYY-MM-DD-Section-Project-Serial</h5></center>  
+      </div>
+    </div>
+    
+    <div class="row" id="forReadOnlySrc" style="background-color:#E5E4E2;">
+      <div class="col-sm-12">
+        {{form.source.label}}&nbsp;
+        {% if data.source == '1' %}
+            <input type="radio" name="optionsRadiosSourceJob" id="optionsRadiosSourceJob" value="2" checked disabled>                
+        {% else %}    
+            <input type="radio" name="optionsRadiosSourceJob" id="optionsRadiosSourceJob" value="1" disabled>
+        {% endif %}
+        <label for="optionsRadiosSourceJob">Job</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+        
+        {% if data.source == '2' %}
+            <input type="radio" name="optionsRadiosSourceAudit" id="optionsRadiosSourceAudit" value="2" checked disabled>          
+        {% else %}    
+            <input type="radio" name="optionsRadiosSourceAudit" id="optionsRadiosSourceAudit" value="2" disabled>
+        {% endif %}
+        <label for="optionsRadiosSourceAudit">Audit</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        {% if data.source == '3' %}
+            <input type="radio" name="optionsRadiosSourceCustomer" id="optionsRadiosSourceCustomer" value="3" checked disabled>          
+        {% else %}    
+            <input type="radio" name="optionsRadiosSourceCustomer" id="optionsRadiosSourceCustomer" value="3" disabled>
+        {% endif %}
+        <label for="optionsRadiosSourceCustomer">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        {% if data.source == '4' %}
+            <input type="radio" name="optionsRadiosSourceManagementAction" id="optionsRadiosSourceManagementAction" value="4" checked disabled>          
+        {% else %}    
+            <input type="radio" name="optionsRadiosSourceManagementAction" id="optionsRadiosSourceManagementAction" value="4" disabled>
+        {% endif %}
+        <label for="optionsRadiosSourceManagementAction">Management Action</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        {% if data.source == '5' %}
+            <input type="radio" name="optionsRadiosSourceOthers" id="optionsRadiosSourceOthers" value="5" checked disabled>          
+        {% else %}    
+            <input type="radio" name="optionsRadiosSourceOthers" id="optionsRadiosSourceOthers" value="5" disabled>
+        {% endif %}
+        <label for="optionsRadiosSourceOthers">Others</label>
+        
+        <input type="textbox" class="form-control" name="other_source" value="{{data.other_source}}" disabled/>
+      </div>    
+    </div>
+    
+    
+    
+    <div class="row form-inline" style="background-color:powderblue;">
+      <div class="col-sm-12">
+        <div class="row form-group">
+          <h5><strong>
+          A. Nonconformance detail description</strong></h5>  
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="row" id="forReadOnlyA" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           {{form.classification.label}}
+           
+           {% if data.classification == '1' %}
+               <input type="radio" id="classification_1_read_only" value="1" checked disabled>          
+           {% else %}    
+               <input type="radio" id="classification_1_read_only" value="1" disabled>
+           {% endif %}
+           <label for="classification_1_read_only">Minor</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+        
+           {% if data.classification == '2' %}
+               <input type="radio" id="classification_2_read_only" value="2" checked disabled>          
+           {% else %}    
+               <input type="radio" id="classification_2_read_only" value="2" disabled>
+           {% endif %}
+           <label for="classification_2_read_only">Major</label>
+        </div>
+        <div class="row">
+          <textarea id="nc_detail_description_read_only" class="form-control"  rows="7" cols="75" disabled/>
+            {{data.nc_detail_description}}
+          </textarea>         
+        </div>        
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>Discovered by:</strong>    <!--discovered disabled disabled-->     
+          
+        </div> 
+        <div class="row">
+          {{form.nc_discovered_by.label}}<input type="textbox"  class="form-control" id="nc_discovered_by_read_only" value="{{nc_discovered_by}}" disabled/>
+          {{form.nc_discoverer_email.label}}<input type="textbox"  class="form-control" id="nc_discovered_by_read_only" value="{{nc_discoverer_email}}" disabled/>
+        
+        </div> 
+        <div class="row">
+          <strong>Confirmed by: </strong>                     
+        </div>
+        <div class="row">
+          {{form.nc_conformed_by.label}}<input type="textbox" class="form-control" id="nc_conformed_by_read_only" value="{{nc_conformed_by_name}}" disabled/>
+          &nbsp;{{form.nc_conformed_date.label}}<input type="textbox" class="form-control" id="nc_conformed_date_read_only" size="10" value="{{data.nc_conformed_date|date:"Y-m-d"}}" disabled/> 
+          {% if data.nc_conforme_status == '1' %}
+            <span class="glyphicon glyphicon-ok"></span>          
+          {% elif data.nc_conforme_status == '0' %}
+            <span class="glyphicon glyphicon-remove"></span>    
+          {% endif %}    
+        </div>   
+      </div>          
+    </div>
+    
+    <div class="row" style="background-color:powderblue;">
+      <div class="col-sm-12">
+        <div class="row">
+          <h5><strong>
+          B. Immediate Correction</strong></h5>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row" id="forReadOnlyB" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">
+          <textarea id="ic_description_read_only" class="form-control" rows="4" cols="75" disabled/>
+            {{data.ic_description}}
+          </textarea> 
+        </div>  
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>By:</strong>
+        </div> 
+        <div class="row">
+    
+             {{form.ic_incharge.label}}<input type="textbox" id="ic_incharge_read_only" class="form-control" value="{{ic_incharge_name}}" disabled/>&nbsp;{{form.ic_create_date.label}}<input type="textbox" id="ic_create_date_read_only" class="form-control" size="10" value="{{data.ic_create_date|date:"Y-m-d"}}" disabled/>       
+          
+        </div> 
+        <div class="row">
+          <strong>Approved by:</strong>        
+        </div>
+        <div class="row">
+          SH:&nbsp<input type="textbox" class="form-control" id="ic_approve_by_read_only" value="{{ic_approve_by_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="ic_approve_date_read_only" size="10" value="{{data.ic_approve_date|date:"Y-m-d"}}" disabled/>  
+          {% if data.ic_approve_status == '1' %}
+            <span class="glyphicon glyphicon-ok"></span>          
+          {% elif data.ic_approve_status == '0' %}
+            <span class="glyphicon glyphicon-remove"></span>    
+          {% endif %}          
+        </div>   
+      </div>          
+    </div>
+    
+    <div class="row" style="background-color:powderblue;">
+      <div class="col-sm-12">
+        <div class="row">
+          <h5><strong>
+          <!--for 5Whys guided-->
+          C. Root Cause Analysis(5 Whys, Fishbone, etc) <a href="https://shigroup-my.sharepoint.com/personal/ba00620467_shi-g_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fba00620467%5Fshi%2Dg%5Fcom%2FDocuments%2F2%2E0%20ISO9001%5F2015v%2F5%2E0%20NCR%20Web%20Application&originalPath=aHR0cHM6Ly9zaGlncm91cC1teS5zaGFyZXBvaW50LmNvbS86ZjovZy9wZXJzb25hbC9iYTAwNjIwNDY3X3NoaS1nX2NvbS9FbGpYLXNsdmVfaEtxTVY4M0xLVHVkZ0IzWV9lZ2hFdWpaaGV5LTl6emFmQ1VRP3J0aW1lPWpuc2JxMjV6MlVn/" target="_blank">[RCA How To]</a></strong></h5>        
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="row" id="forReadOnlyC" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">
+          <textarea name="rca_description" id="rca_description_read_only" class="form-control"  rows="10" cols="75" disabled/>
+            {{data.rca_description}}
+          </textarea> 
+        </div>
+        <div class="row">
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+           {{form.ca_necessary.label}}
+           {% if data.ca_necessary == '1' %}
+               <input type="radio" id="ca_necessary_read_only0" value="0" checked disabled>          
+           {% else %}    
+               <input type="radio" id="ca_necessary_read_only0" value="0" disabled>
+           {% endif %}
+           <label for="ca_necessary_0_read_only">Yes, Proceed to D</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+           
+           {% if data.ca_necessary == '0' %}
+               <input type="radio" id="ca_necessary_read_only1" value="1" checked disabled>          
+           {% else %}    
+               <input type="radio" id="ca_necessary_read_only1" value="1" disabled>
+           {% endif %}
+           <label for="optionsRadioNo">No</label>
+        </div>       
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>By:</strong>
+        </div> 
+        <div class="row">
+          In-Charge:&nbsp<input type="textbox" class="form-control" id="rca_incharge_read_only" value="{{rca_incharge_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="rca_create_date_read_only" size="10" value="{{data.rca_create_date|date:"Y-m-d"}}" disabled/> 
+        </div> 
+        <div class="row">
+          <strong>Approved by:</strong>        
+        </div>
+        <div class="row">
+          SH:&nbsp<input type="textbox" class="form-control" id="rca_approve_by_read_only" value="{{rca_approve_by_name}}" disabled/>&nbsp;Date:&nbsp<input type="textbox" class="form-control" id="rca_approve_date_read_only" size="10" value="{{data.rca_approve_date|date:"Y-m-d"}}" disabled/>
+                  
+          {% if data.rca_approve_status == '1' %}
+            <span class="glyphicon glyphicon-ok"></span>          
+          {% elif data.rca_approve_status == '0' %}
+            <span class="glyphicon glyphicon-remove"></span>    
+          {% endif %}          
+        </div>   
+      </div>          
+    </div>
+    
+    
+    <div id="forHeaderD" class="row" style="background-color:powderblue;">
+      <div class="col-sm-12">
+        <div class="row">
+          <h5><strong>
+          D. Corrective Action To The Cause</strong></h5>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row" id="forReadOnlyD" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {{form.ca_target_date.label}}<input type="textbox" class="form-control" id="ca_target_date_read_only" size="10" value="{{data.ca_target_date|date:"Y-m-d"}}" disabled/>
+        </div>
+        <div class="row">
+          <textarea name="ca_description" id="ca_description_read_only" class="form-control"  rows="4" cols="75" disabled/>
+            {{data.ca_description}}
+          </textarea>       
+        </div>        
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>Checked by:</strong>
+        </div> 
+        <div class="row">
+          {{form.ca_checked_by_sh.label}}<input type="textbox" class="form-control" id="ca_checked_by_sh_read_only" value="{{ca_checked_by_sh_name}}" disabled/>&nbsp;{{form.ca_check_date_by_sh.label}}<input type="textbox" class="form-control" id="ca_check_date_by_sh_read_only" size="10" value="{{data.ca_check_date_by_sh|date:"Y-m-d"}}" disabled/> 
+          {% if data.ca_check_by_sh_status == '1' %}
+            <span class="glyphicon glyphicon-ok"></span>          
+          {% elif data.ca_check_by_sh_status == '0' %}
+            <span class="glyphicon glyphicon-remove"></span>    
+          {% endif %}    
+        </div> 
+        <div class="row">
+          <strong>Aprroved by:</strong>        
+        </div>
+        <div class="row">
+            
+            {{form.ca_checked_by_sh.label}}<input type="textbox" class="form-control" id="ca_approved_by_mgr_read_only" value="{{ca_approved_by_mgr_name}}" disabled/>&nbsp;{{form.ca_approved_date_by_mgr.label}}&nbsp<input type="textbox" class="form-control" id="ca_approved_date_by_mgr_read_only" size="10" value="{{data.ca_approved_date_by_mgr|date:"Y-m-d"}}" disabled/>           
+        
+        
+          {% if data.ca_approve_by_mgr_status == '1' %}
+            <span class="glyphicon glyphicon-ok"></span>          
+          {% elif data.ca_approve_by_mgr_status == '0' %}
+            <span class="glyphicon glyphicon-remove"></span>    
+          {% endif %}                  
+        </div>   
+      </div>          
+    </div>
+    
+    <div id="forHeaderE" class="row" style="background-color:powderblue;">
+      <div class="col-sm-6">
+        <div class="row">
+          <h5><strong>
+          E. Result Of Action</strong></h5>         
+        </div>  
+      </div>  
+    </div>
+    
+    
+    <div class="row" id="forReadOnlyE" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">        
+          <textarea name="ra_description" id="ra_description_read_only" class="form-control"  rows="4" cols="75" disabled/>
+            {{data.ra_description}}
+          </textarea>    
+        </div>
+        <div class="row">
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           {{form.ra_action_effective.label}}&nbsp;
+           {% if data.ra_action_effective == '1' %}
+               <input type="radio" id="ra_action_effective_1_read_only" value="0" checked disabled>          
+           {% else %}    
+               <input type="radio" id="ra_action_effective_1_read_only" value="0" disabled>
+           {% endif %}
+           <label for="ra_action_effective_0_read_only">Yes, proceed to F</label>&nbsp;&nbsp;&nbsp;&nbsp;  
+        
+           {% if data.ra_action_effective == '0' %}
+               <input type="radio" id="ra_action_effective_0_read_only" value="1" checked disabled>          
+           {% else %}    
+               <input type="radio" id="ra_action_effective_0_read_only" value="1" disabled>
+           {% endif %}
+           <label for="ra_action_effective_1_read_only"> No, Return to C </label>
+        </div>
+        <div class="row">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;
+           {% if data.ra_action_effective == '2' %}
+               <input type="radio" id="ra_action_effective_2_read_only" value="2" checked disabled>          
+           {% else %}    
+               <input type="radio" id="ra_action_effective_2_read_only" value="2" disabled>
+           {% endif %}
+           <label for="ra_action_effective_2_read_only">  For follow-up on date </label>
+           
+           &nbsp;
+           <input type="textbox" class="form-control" id="ra_followup_date_read_only" size="10" value="{{data.ra_followup_date|date:"Y-m-d"}}" disabled/>         
+        </div>       
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>By:</strong>
+        </div> 
+        <div class="row">
+          {{form.ra_check_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_by_staff_read_only" value="{{ra_check_by_staff_name}}" disabled/>&nbsp;{{form.ra_check_date_by_staff.label}}<input type="textbox" class="form-control" id="ra_check_date_by_staff_read_only" size="10" value="{{data.ra_check_date_by_staff|date:"Y-m-d"}}" disabled/>  
+        </div> 
+        <div class="row">
+          <strong>Approved by:</strong>        
+        </div>
+        <div class="row">
+          {{form.ra_check_by_sh.label}}<input type="textbox" class="form-control" id="ra_check_by_sh_read_only" value="{{ra_check_by_sh_name}}" disabled/>&nbsp;{{form.ra_check_date_by_sh.label}}<input type="textbox" class="form-control" id="ra_check_date_by_sh_read_only" size="10" value="{{data.ra_check_date_by_sh|date:"Y-m-d"}}" disabled/>
+          
+          {% if data.ra_check_by_sh_status == '1' %}
+            <span id="s1" class="glyphicon glyphicon-ok"></span>          
+          {% elif data.ra_check_by_sh_status == '0' %}
+            <span id="s2" class="glyphicon glyphicon-remove"></span>    
+          {% endif %}
+        </div>   
+      </div>          
+    </div>
+    
+    
+    <div id="forHeaderF" class="row" style="background-color:powderblue;">
+      <div class="col-sm-6">
+        <div class="row">
+          <h5><strong>
+          F. Show Effectiveness</strong></h5>     
+        </div>  
+      </div>  
+    </div>
+    
+    
+    <div class="row" id="forReadOnlyF" style="background-color:#E5E4E2;">
+      <div class="col-sm-6">
+        <div class="row">
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           {{form.se_ro_updated.label}}&nbsp;
+           
+           
+    
+           {% if data.se_ro_updated == '1' %}
+               <input type="checkbox" id="se_ro_updated_1_read_only" value="1" checked disabled>          
+           {% else %}    
+               <input type="checkbox" id="se_ro_updated_1_read_only" value="1" disabled>
+           {% endif %}
+           <label for="se_ro_updated_1_read_only">Yes</label>&nbsp;&nbsp;&nbsp;&nbsp; 
+           
+       
+        </div>
+        <div class="row">
+          <textarea id="se_description_read_only" name="se_description_read_only" class="form-control" rows="4" cols="75" disabled/>
+            {{data.se_description}}
+          </textarea> 
+        </div>        
+      </div>  
+      <div class="col-sm-6">
+        <div class="row">
+          <strong>Approved by:</strong>
+        </div> 
+        <div class="row">
+        
+        
+            {{form.se_check_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_by_mgr_read_only" value="{{se_check_by_mgr_name}}" disabled/>&nbsp;{{form.se_check_date_by_mgr.label}}<input type="textbox" class="form-control" id="se_check_date_by_mgr_read_only" size="10" value="{{data.se_check_date_by_mgr|date:"Y-m-d"}}" disabled/>
+            
+    
+          {% if data.se_check_by_mgr_status == '1' and form.se_description_read_only != '' %}
+            <span id="s3" class="glyphicon glyphicon-ok"></span>          
+          {% elif data.se_check_by_mgr_status == '0' and form.se_description_read_only != '' %}
+            <span id="s4" class="glyphicon glyphicon-remove"></span>    
+          {% endif %}
+        </div> 
+        <div class="row">
+          <strong>Aprroved by:</strong>        
+        </div>
+        <div class="row">  
+              
+            {{form.se_check_by_qa.label}}<input type="textbox" class="form-control" id="se_check_by_qa" value="{{se_check_by_qa_name}}" disabled/>&nbsp;{{form.se_check_date_by_qa.label}}&nbsp<input type="textbox" class="form-control" id="se_check_date_by_qa_read_only" size="10" value="{{data.se_check_date_by_qa|date:"Y-m-d"}}" disabled/>  
+          
+          
+          {% if data.se_check_by_qa_status == '1'%}
+            <span id="s5" class="glyphicon glyphicon-ok"></span>          
+          {% elif data.se_check_by_qa_status == '0'%}
+            <span id="s6" class="glyphicon glyphicon-remove"></span>    
+          {% endif %}        
+        </div>   
+      </div>          
+    </div>
+</form>
+
+
+
+
+{{form.hidden_rev_history}}
+
+
+
+
+{{form.ncr_no}}
+{{form.hidden_dept_id}}
+{{form.hidden_mail_sent_date_1}}
+{{form.hidden_mail_sent_date_2}}
+{{form.hidden_mail_sent_date_3}}
+
+{{form.hidden_update_date}}
+
+{{form.nc_conforme_status}}
+{{form.ic_approve_status}}
+{{form.rca_approve_status}}
+{{form.ca_check_by_sh_status}}
+{{form.ca_approve_by_mgr_status}}
+{{form.ra_check_by_sh_status}}
+{{form.se_check_by_mgr_status}}
+{{form.se_check_by_qa_status}}
+
+<script src="{% static 'js/v3.0.3_bootstrap.min.js' %}"> </script>
+
+</div>
+
+
+<br><br><br>
+<div class="sdmifooter text-center" style="margin-bottom:0">
+  <p> Copyright (C) 2021 SDMI. All Rights Reserved.</p>
+</div>
+
+<script>
+
+
+$(function () {
+    $("#modalForA1").click(function(){
+
+        $("#modalForA").modal("show"); 
+    });
+    
+    
+    $("#modalForB1").click(function(){
+
+        $("#modalForB").modal("show"); 
+    });
+
+    $("#modalForC1").click(function(){
+
+        $("#modalForC").modal("show"); 
+    });
+
+    $("#modalForD1").click(function(){
+
+        $("#modalForD").modal("show"); 
+    });
+
+    $("#modalForE1").click(function(){
+
+        $("#modalForE").modal("show"); 
+    });
+
+    $("#modalForF1").click(function(){
+
+        $("#modalForF").modal("show"); 
+    });
+
+});
+    
+    if($("#ca_necessary_read_only1").is(':checked')){
+
+        $("#forHeaderD").hide();
+        $("#forReadOnlyD").hide();
+        $("#forHeaderE").hide();
+        $("#forReadOnlyE").hide();
+        $("#forHeaderF").hide();
+        $("#forReadOnlyF").hide();
+    }
+    
+    
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
